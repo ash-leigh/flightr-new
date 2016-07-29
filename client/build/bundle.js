@@ -254,7 +254,8 @@
 	  this.starRating = quoteObject.hotelStarRating,
 	  this.guestRating = quoteObject.hotelGuestRating,
 	  this.percentRecommended = quoteObject.percentRecommended,
-	  this.nightlyPrice = quoteObject.lowRateInfo.total
+	  this.nightlyPrice = quoteObject.lowRateInfo.total,
+	  this.country = quoteObject.countryCode
 	}
 	
 	HotelQuote.prototype = {
