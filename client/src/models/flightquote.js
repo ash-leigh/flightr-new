@@ -6,6 +6,8 @@ var FlightQuote = function(quoteQbject){
   this.price = quoteQbject.MinPrice,
   this.outboundCarrier = quoteQbject.OutboundLeg.CarrierIds[0],
   this.inboundCarrier = quoteQbject.InboundLeg.CarrierIds[0]
+  this.inboundAirport = quoteQbject.InboundAirportName
+  this.outboundAirport = quoteQbject.OutboundAirportName
 }
 
 FlightQuote.prototype = {

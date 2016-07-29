@@ -1,9 +1,7 @@
-var Result = function(params){
-  this.originCity = 
-  this.destinationCity = 
+var Result = function(){
+  this.flight = 
   this.hotels = []
-  this.flightPrice = 
-  this.hotel
+  this.price = 
 }
 
 Result.prototype = {

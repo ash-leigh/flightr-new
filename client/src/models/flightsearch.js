@@ -7,15 +7,15 @@ var FlightSearch = function(data){
 FlightSearch.prototype = {
   getFlightData: function(apiKey){
     console.log('attemping api')
-    var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/EDI/everywhere/2016-12-01/2016-12-14?apiKey=' + apiKey;
+    var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/LON/everywhere/2016-10-01/2016-10-14?apiKey=' + apiKey;
     var request = new XMLHttpRequest();
     request.open('GET', url);
     request.onload = function(){
       if(request.status === 200){
         var jsonString = request.responseText;
         var flightData = JSON.parse(jsonString);
+        console.log(flightData);
         var newFlightData = this.replaceCodes(flightData);
-        // console.log(newFlightData);
         this.populateQuotes(newFlightData);
         console.log(this)
       }
@@ -33,6 +33,7 @@ FlightSearch.prototype = {
         if(quote.OutboundLeg.OriginId === city.PlaceId){
           quote.OutboundLeg.OriginId = city.CityName;
           quote.InboundLeg.DestinationId = city.CityName;
+          quote.OutboundAirportName = city.Name;
         }
       })
     })
@@ -49,6 +50,7 @@ FlightSearch.prototype = {
         if(quote.OutboundLeg.DestinationId === city.PlaceId){
           quote.OutboundLeg.DestinationId = city.CityName;
           quote.InboundLeg.OriginId = city.CityName;
+          quote.InboundAirportName = city.Name;
         }
       })
     })

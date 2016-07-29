@@ -45,56 +45,23 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var FlightSearch = __webpack_require__(3);
+	var HotelSearch = __webpack_require__(5);
 	
 	var state = {
 	  skyscannerApiKey: 'co301553792687403420764331127549',
-	  expediaApiKey: 'fZPSPARW8ZW6Yg738AzbASiN8VPFwVos',
+	  expediaApiKey: '49anVGknDW2Ck8ATFBRAAMQ0Ls75wphH',
 	  resultQuotes: [],
 	}
 	
 	window.onload = function(){
 	  var flightSearch = new FlightSearch()
-	  // console.log(flightSearch);
 	  flightSearch.getFlightData(state.skyscannerApiKey);
-	  // console.log(flightSearch.quotes)
-	  // getFlightData(state.skyscannerApiKey);
+	  var hotelSearch = new HotelSearch()
+	  hotelSearch.getHotelData(state.expediaApiKey)
 	}
 	
 	
-	function getFlightData(api){
-	 
-	}
 	
-	function populateResults(data){
-	  var quotes = data.Quotes;
-	  var cities = data.Places;
-	
-	  quotes.forEach(function(quote){
-	
-	    cities.forEach(function(city){
-	
-	      if(quote.OutboundLeg.DestinationId === city.PlaceId){
-	        quote.CityName = city.CityName;
-	        state.resultQuotes.push(quote);
-	        console.log(quote.CityName)
-	      }
-	    })
-	  })
-	}
-	
-	// function getHotelData(api){
-	//   var url = 'http://terminal2.expedia.com/x/mhotels/search?city=EDINBURGH&checkInDate=2016-12-15&checkOutDate=2016-12-17&room1=2&apikey=' + api;
-	//   var request = new XMLHttpRequest();
-	//   request.open('GET', url);
-	//   request.onload = function(){
-	//     if(request.status === 200){
-	//       var jsonString = request.responseText;
-	//       var hotelData = JSON.parse(jsonString);
-	//         // console.log(hotelData);
-	//       }
-	//     }
-	//     request.send(null);
-	//   }
 	
 
 
@@ -113,15 +80,15 @@
 	FlightSearch.prototype = {
 	  getFlightData: function(apiKey){
 	    console.log('attemping api')
-	    var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/EDI/everywhere/2016-12-01/2016-12-14?apiKey=' + apiKey;
+	    var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/LON/everywhere/2016-10-01/2016-10-14?apiKey=' + apiKey;
 	    var request = new XMLHttpRequest();
 	    request.open('GET', url);
 	    request.onload = function(){
 	      if(request.status === 200){
 	        var jsonString = request.responseText;
 	        var flightData = JSON.parse(jsonString);
+	        console.log(flightData);
 	        var newFlightData = this.replaceCodes(flightData);
-	        // console.log(newFlightData);
 	        this.populateQuotes(newFlightData);
 	        console.log(this)
 	      }
@@ -139,6 +106,7 @@
 	        if(quote.OutboundLeg.OriginId === city.PlaceId){
 	          quote.OutboundLeg.OriginId = city.CityName;
 	          quote.InboundLeg.DestinationId = city.CityName;
+	          quote.OutboundAirportName = city.Name;
 	        }
 	      })
 	    })
@@ -155,6 +123,7 @@
 	        if(quote.OutboundLeg.DestinationId === city.PlaceId){
 	          quote.OutboundLeg.DestinationId = city.CityName;
 	          quote.InboundLeg.OriginId = city.CityName;
+	          quote.InboundAirportName = city.Name;
 	        }
 	      })
 	    })
@@ -218,6 +187,8 @@
 	  this.price = quoteQbject.MinPrice,
 	  this.outboundCarrier = quoteQbject.OutboundLeg.CarrierIds[0],
 	  this.inboundCarrier = quoteQbject.InboundLeg.CarrierIds[0]
+	  this.inboundAirport = quoteQbject.InboundAirportName
+	  this.outboundAirport = quoteQbject.OutboundAirportName
 	}
 	
 	FlightQuote.prototype = {
@@ -228,6 +199,71 @@
 	}
 	
 	module.exports = FlightQuote;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var HotelQuote = __webpack_require__(6);
+	
+	var HotelSearch = function(data){
+	  this.quotes = []
+	}
+	
+	HotelSearch.prototype = {
+	  getHotelData: function(apiKey){
+	    console.log('attemping hotel api')
+	    var url = 'http://terminal2.expedia.com/x/mhotels/search?city=EDINBURGH&checkInDate=2016-12-15&checkOutDate=2016-12-20&room1=9&apikey=' + apiKey;
+	    var request = new XMLHttpRequest();
+	    request.open('GET', url);
+	    request.onload = function(){
+	      if(request.status === 200){
+	        var jsonString = request.responseText;
+	        var hotelData = JSON.parse(jsonString);
+	        this.populateQuotes(hotelData);
+	        console.log(this)
+	      }
+	    }.bind(this)
+	    request.send(null);
+	  },
+	  populateQuotes: function(hotelData){
+	    hotelData.hotelList.forEach(function(hotel){
+	      if(hotel.isHotelAvailable){
+	        this.quotes.push(new HotelQuote(hotel))
+	      }
+	    }.bind(this))
+	  }
+	
+	}
+	
+	module.exports = HotelSearch;
+	
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	var HotelQuote = function(quoteObject){
+	  this.hotelName = quoteObject.name,
+	  this.hotelAddress = quoteObject.address + ", " + quoteObject.city + ", " + quoteObject.stateProvinceCode + ", " + quoteObject.postalCode
+	  this.latLng = {lat: quoteObject.latitude, lng: quoteObject.longitude},
+	  this.thumbnailUrl = quoteObject.largeThumbnailUrl,
+	  this.description = quoteObject.shortDescription,
+	  this.locationDescription = quoteObject.locationDescription,
+	  this.starRating = quoteObject.hotelStarRating,
+	  this.guestRating = quoteObject.hotelGuestRating,
+	  this.percentRecommended = quoteObject.percentRecommended,
+	  this.nightlyPrice = quoteObject.lowRateInfo.total
+	}
+	
+	HotelQuote.prototype = {
+	
+	}
+	
+	module.exports = HotelQuote;
+	
+
 
 /***/ }
 /******/ ]);
