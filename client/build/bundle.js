@@ -42,54 +42,49 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	sddssddsds
-	var TestModel = __webpack_require__(1)
-	var TestModelView = __webpack_require__(2)
-	
-	dfdfdfsfsdfsdf
+	var state = {
+	  skyscannerApiKey: 'co301553792687403420764331127549',
+	  expediaApiKey: 'fZPSPARW8ZW6Yg738AzbASiN8VPFwVos',
+	}
 	
 	window.onload = function(){
-	  var test = new TestModel('Jazz');
-	  var testView = new TestModelView(test);
-	  testView.changeHeader();
+	  getFlightData(state.skyscannerApiKey);
+	  getHotelData(state.expediaApiKey);
 	}
 	
-	//This is Joes Comment
-
-
-/***/ },
-/* 1 */
-/***/ function(module, exports) {
-
-	var Test = function(name){
-	  this.name = name;
-	}
 	
-	Test.prototype = {
-	  talk: function(){
-	    console.log("Hello my name is " + this.name )
+	function getFlightData(api){
+	  console.log('attemping api')
+	  var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/EDI/everywhere/2016-08-01/2016-08-14?apiKey=' + api;
+	  var request = new XMLHttpRequest();
+	  request.open('GET', url);
+	  request.onload = function(){
+	    if(request.status === 200){
+	      var jsonString = request.responseText;
+	      var flightData = JSON.parse(jsonString);
+	      console.log(flightData);
+	    }
 	  }
+	  request.send(null);
 	}
 	
-	module.exports = Test;
-
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-	var TestView = function(testModel){
-	  this.model = testModel;
-	}
-	
-	TestView.prototype = {
-	  changeHeader: function(){
-	    var h1 = document.getElementById('title')
-	    h1.innerText = "My name is " + this.model.name;
+	function getHotelData(api){
+	  var url = 'http://terminal2.expedia.com/x/mhotels/search?city=EDINBURGH&checkInDate=2016-12-15&checkOutDate=2016-12-17&room1=2&apikey=' + api;
+	    var request = new XMLHttpRequest();
+	    request.open('GET', url);
+	    request.onload = function(){
+	      if(request.status === 200){
+	        var jsonString = request.responseText;
+	        var hotelData = JSON.parse(jsonString);
+	        console.log(hotelData);
+	      }
+	    }
+	    request.send(null);
 	  }
-	}
-	module.exports = TestView;
+	
+
 
 /***/ }
 /******/ ]);
