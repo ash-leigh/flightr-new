@@ -26,7 +26,20 @@ FlightSearch.prototype = {
     request.send(null);
   },
   replaceOriginCityCode: function(flightData){
+    var quotes = flightData.Quotes;
+    var cities = flightData.Places;
 
+    quotes.forEach(function(quote){
+
+      cities.forEach(function(city){
+
+        if(quote.OutboundLeg.OriginId === city.PlaceId){
+          quote.OutboundLeg.OriginId = city.CityName;
+          quote.InboundLeg.DestinationId = city.CityName;
+        }
+      })
+    })
+    return flightData;
   },
   replaceDestinationCityCode: function(flightData){
     var quotes = flightData.Quotes;
@@ -45,16 +58,40 @@ FlightSearch.prototype = {
     return flightData;
   },
   replaceOutboundCarrierCode: function(flightData){
+    var quotes = flightData.Quotes;
+    var carriers = flightData.Carriers;
 
+    quotes.forEach(function(quote){
+
+      carriers.forEach(function(carrier){
+
+        if(quote.OutboundLeg.CarrierIds[0] === carrier.CarrierId){
+          quote.OutboundLeg.CarrierIds[0] = carrier.Name;
+        }
+      })
+    })
+    return flightData;
   },
   replaceInboundCarrierCode: function(flightData){
+    var quotes = flightData.Quotes;
+    var carriers = flightData.Carriers;
 
+    quotes.forEach(function(quote){
+
+      carriers.forEach(function(carrier){
+
+        if(quote.InboundLeg.CarrierIds[0] === carrier.CarrierId){
+          quote.InboundLeg.CarrierIds[0] = carrier.Name;
+        }
+      })
+    })
+    return flightData;
   },
   replaceCodes: function(flightData){
-    // var flightData = replaceOriginCityCode(flightData);
-    var flightData = this.replaceDestinationCityCode(flightData);
-    // flightData = replaceOutboundCarrierCode(flightData);
-    // flightData = replaceOutboundCarrierCode(flightData);
+    var flightData = this.replaceOriginCityCode(flightData);
+    flightData = this.replaceDestinationCityCode(flightData);
+    flightData = this.replaceOutboundCarrierCode(flightData);
+    flightData = this.replaceInboundCarrierCode(flightData);
     // return flightData;
   },
   populateQuotes: function(flightData){
