@@ -1,7 +1,7 @@
-// var FlightQuote = require('flightquote.js');
+var FlightQuote = require('./flightquote.js');
 
 var FlightSearch = function(data){
-  quotes = []
+  this.quotes = [];
 }
 
 FlightSearch.prototype = {
@@ -14,13 +14,10 @@ FlightSearch.prototype = {
       if(request.status === 200){
         var jsonString = request.responseText;
         var flightData = JSON.parse(jsonString);
-
-        console.log(flightData);
-
-        newData = this.replaceCodes(flightData);
-        this.populateQuotes(newData);
-
-        console.log(flightData);
+        var newFlightData = this.replaceCodes(flightData);
+        // console.log(newFlightData);
+        this.populateQuotes(newFlightData);
+        console.log(this)
       }
     }.bind(this)
     request.send(null);
@@ -92,10 +89,12 @@ FlightSearch.prototype = {
     flightData = this.replaceDestinationCityCode(flightData);
     flightData = this.replaceOutboundCarrierCode(flightData);
     flightData = this.replaceInboundCarrierCode(flightData);
-    // return flightData;
+    return flightData;
   },
   populateQuotes: function(flightData){
-
+    flightData.Quotes.forEach(function(flight){
+      this.quotes.push(new FlightQuote(flight))
+    }.bind(this))
   }
 }
 

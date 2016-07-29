@@ -7,10 +7,10 @@ var state = {
 }
 
 window.onload = function(){
-  var flightsearch = new FlightSearch()
-  console.log(flightsearch);
-  flightsearch.getFlightData(state.skyscannerApiKey);
-
+  var flightSearch = new FlightSearch()
+  // console.log(flightSearch);
+  flightSearch.getFlightData(state.skyscannerApiKey);
+  // console.log(flightSearch.quotes)
   // getFlightData(state.skyscannerApiKey);
 }
 

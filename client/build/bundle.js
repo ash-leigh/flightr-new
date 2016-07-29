@@ -53,10 +53,10 @@
 	}
 	
 	window.onload = function(){
-	  var flightsearch = new FlightSearch()
-	  console.log(flightsearch);
-	  flightsearch.getFlightData(state.skyscannerApiKey);
-	
+	  var flightSearch = new FlightSearch()
+	  // console.log(flightSearch);
+	  flightSearch.getFlightData(state.skyscannerApiKey);
+	  // console.log(flightSearch.quotes)
 	  // getFlightData(state.skyscannerApiKey);
 	}
 	
@@ -102,12 +102,12 @@
 /* 1 */,
 /* 2 */,
 /* 3 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// var FlightQuote = require('flightquote.js');
+	var FlightQuote = __webpack_require__(4);
 	
 	var FlightSearch = function(data){
-	  quotes = []
+	  this.quotes = [];
 	}
 	
 	FlightSearch.prototype = {
@@ -120,13 +120,10 @@
 	      if(request.status === 200){
 	        var jsonString = request.responseText;
 	        var flightData = JSON.parse(jsonString);
-	
-	        console.log(flightData);
-	
-	        newData = this.replaceCodes(flightData);
-	        this.populateQuotes(newData);
-	
-	        console.log(flightData);
+	        var newFlightData = this.replaceCodes(flightData);
+	        // console.log(newFlightData);
+	        this.populateQuotes(newFlightData);
+	        console.log(this)
 	      }
 	    }.bind(this)
 	    request.send(null);
@@ -198,14 +195,39 @@
 	    flightData = this.replaceDestinationCityCode(flightData);
 	    flightData = this.replaceOutboundCarrierCode(flightData);
 	    flightData = this.replaceInboundCarrierCode(flightData);
-	    // return flightData;
+	    return flightData;
 	  },
 	  populateQuotes: function(flightData){
-	
+	    flightData.Quotes.forEach(function(flight){
+	      this.quotes.push(new FlightQuote(flight))
+	    }.bind(this))
 	  }
 	}
 	
 	module.exports = FlightSearch;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	var FlightQuote = function(quoteQbject){
+	  this.originCity = quoteQbject.OutboundLeg.OriginId,
+	  this.destinationCity = quoteQbject.OutboundLeg.DestinationId,
+	  this.outboundDate = this.fixdate(quoteQbject.OutboundLeg.DepartureDate),
+	  this.inboundDate = this.fixdate(quoteQbject.InboundLeg.DepartureDate),
+	  this.price = quoteQbject.MinPrice,
+	  this.outboundCarrier = quoteQbject.OutboundLeg.CarrierIds[0],
+	  this.inboundCarrier = quoteQbject.InboundLeg.CarrierIds[0]
+	}
+	
+	FlightQuote.prototype = {
+	  fixdate: function(date){
+	    dateArray = date.split('T')
+	    return dateArray[0]
+	  }
+	}
+	
+	module.exports = FlightQuote;
 
 /***/ }
 /******/ ]);
