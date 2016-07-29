@@ -44,16 +44,20 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	sddssddsds
 	var TestModel = __webpack_require__(1)
 	var TestModelView = __webpack_require__(2)
 	
-	
+	dfdfdfsfsdfsdf
 	
 	window.onload = function(){
 	  var test = new TestModel('Jazz');
 	  var testView = new TestModelView(test);
 	  testView.changeHeader();
 	}
+	
+	
+
 
 /***/ },
 /* 1 */
