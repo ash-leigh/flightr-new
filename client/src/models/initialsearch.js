@@ -1,21 +1,12 @@
-var InitialSearchParams = function(){
-  this.origin = this.getUserLatLng()
-  this.startDate = 
-  this.endDate = 
+var InitialSearchParams = function(latLng, startDate, endDate){
+  this.origin = latLng;
+  this.startDate = startDate;
+  this.endDate = endDate;
 }
 
 InitialSearchParams.prototype = {
-  getUserLatLng: function(){
-    navigator.geolocation.getCurrentPosition(function(position){
-      var userPosition = position.coords.latitude + ',' + position.coords.longitude + '-latlong';
-      return userPosition;
-    })
-  },
-  searchOrigin: function(){
-    
-  }
+  
 }
 
 module.exports = InitialSearchParams;
-
 
