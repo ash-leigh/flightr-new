@@ -8,7 +8,7 @@ var FlightSearch = function(data){
 
 FlightSearch.prototype = {
   getFlightData: function(keys){
-    console.log('attemping api')
+    return new Promise(function(resolve, reject) {
     var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/EDI/everywhere/2016-10-01/2016-10-14?apiKey=' + keys.skyscannerApiKey;
     var request = new XMLHttpRequest();
     request.open('GET', url);
@@ -18,10 +18,11 @@ FlightSearch.prototype = {
         var flightData = JSON.parse(jsonString);
         var newFlightData = this.replaceCodes(flightData);
         this.populateQuotes(newFlightData);
-        console.log(this)
+        resolve(this)
       }//end of onload if
     }.bind(this)
     request.send(null);
+    }.bind(this))//end of promise
   },
 
 
