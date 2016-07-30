@@ -1,3 +1,5 @@
+//nats comment//
+
 var FlightQuote = function(quoteQbject){
   this.originCity = quoteQbject.OutboundLeg.OriginId,
   this.destinationCity = quoteQbject.OutboundLeg.DestinationId,
