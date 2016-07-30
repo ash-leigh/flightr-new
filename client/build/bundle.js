@@ -61,54 +61,37 @@
 	window.onload = function(){
 	  var allResults = new AllResultsObject();
 	
-	  // var flightSearch = new FlightSearch()
-	  // flightSearch.getFlightData(keys);
-	  // var hotelSearch = new HotelSearch()
-	  // hotelSearch.getHotelData(keys)
-	  
+	  var flightSearch = new FlightSearch()
+	  flightSearch.getFlightData(keys);
+	  var hotelSearch = new HotelSearch()
+	  hotelSearch.getHotelData(keys)
 	
-	  // hotelSearch.getHotelData(keys).then(function(response) {
-	  //   //succesfull code goes here.
-	  //   console.log("Look here:", hotelSearch);
+	
+	  // flightSearch.getFlightData(keys).then(function(response) {
+	  //   //returns once flightdata has loaded, responce = flightsearch object
+	  //   flightSearch.quotes.forEach(function(quote){
+	  //     var result = new ResultObject(quote)
+	  //     //nesting promises. for each qoute go and get hotels for dest city
+	  //     hotelSearch.getHotelData(keys, quote).then(function(response) {
+	  //       //go and create a results object
+	  //       // console.log('got hotel data')
+	  //       result.hotels = hotelSearch.quotes;
+	  //       console.log(result)
+	  //       allResults.results.push(result)
+	  //     })
+	  //   })//end of forEach loop
+	  //   console.log('ALL RESULTS', allResults)
 	  // }, function(error) {
 	  //   console.error("Failed!", error);
 	  // });
 	
-	  flightSearch.getFlightData(keys).then(function(response) {
-	    //returns once flightdata has loaded, responce = flightsearch object
-	    flightSearch.quotes.forEach(function(quote){
-	      var result = new ResultObject(quote)
-	      //nesting promises. for each qoute go and get hotels for dest city
-	      hotelSearch.getHotelData(keys, quote).then(function(response) {
-	        //go and create a results object
-	        // console.log('got hotel data')
-	        result.hotels = hotelSearch.quotes;
-	        console.log(result)
-	        allResults.results.push(result)
-	      })
-	    })//end of forEach loop
-	    console.log('ALL RESULTS', allResults)
-	  }, function(error) {
-	    console.error("Failed!", error);
-	  });
-	
 	
 	  var initialSearchView = new InitialSearchView();
-	  // console.log(initialSearchView)
 	
-	  function getSearch(){
-	    var save = function(object){
-	      keys.userSearches.push(object);
-	      console.log(keys);
-	    }
-	    var searchObject = initialSearchView.handleSearchClick();
-	    save(searchObject)
-	  }
-	
-	 
-	
-	  getSearch()
-	  console.log(keys);
+	  initialSearchView.getUserLatLng().then(function(response){
+	    AshleighsObject = initialSearchView.newSearchParams(response)
+	    console.log(AshleighsObject)
+	  })
 	}
 	
 	
@@ -1298,20 +1281,28 @@
 	    var button = document.getElementById('initialSearchButton');
 	    button.onclick = function(){
 	      this.getUserLatLng();
+	      console.log('clicked')
 	    }.bind(this);
 	  },
-	  getUserLatLng: function(){
-	    var constructString = function(lat, lng){
-	      var string = lat + ',' + lng + '-latlong';
-	      return string;
-	    }
-	    navigator.geolocation.getCurrentPosition(function(position){
-	      var lat = position.coords.latitude;
-	      var lng = position.coords.longitude;
-	      var latLng = constructString(lat, lng)
-	      this.newSearchParams(latLng);
-	    }.bind(this))
+	
+	  constructString: function(lat, lng){
+	    var string = lat + ',' + lng + '-latlong';
+	    return string;
 	  },
+	
+	  getUserLatLng: function(){
+	    return new Promise(function(resolve, reject) {
+	      navigator.geolocation.getCurrentPosition(function(position){
+	        var lat = position.coords.latitude;
+	        var lng = position.coords.longitude;
+	        var latLng = this.constructString(lat, lng)
+	        // this.newSearchParams(latLng);
+	        resolve(latLng)
+	      }.bind(this))
+	    }.bind(this))//end of promise
+	  },
+	
+	
 	  getStartDate: function(){
 	    var startDate = document.getElementById('searchStartDateInput').value;
 	    return startDate
