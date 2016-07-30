@@ -11,6 +11,8 @@ window.onload = function(){
   var flightSearch = new FlightSearch()
   flightSearch.getFlightData(keys);
   var hotelSearch = new HotelSearch()
+  hotelSearch.getHotelData(keys)
+  
   hotelSearch.getHotelData(keys).then(function(response) {
     //succesfull code goes here.
     console.log("Look here:", hotelSearch);
