@@ -11,7 +11,37 @@ window.onload = function(){
   var flightSearch = new FlightSearch()
   flightSearch.getFlightData(keys);
   var hotelSearch = new HotelSearch()
-  hotelSearch.getHotelData(keys)
+  hotelSearch.getHotelData(keys).then(function(response) {
+    //succesfull code goes here.
+    console.log("Look here:", hotelSearch);
+  }, function(error) {
+    console.error("Failed!", error);
+  });
+
+  // function get(url) {
+  //   return new Promise(function(resolve, reject) {
+  //     var req = new XMLHttpRequest();
+  //     req.open('GET', url);
+
+  //     req.onload = function() {
+  //       if (req.status == 200) {
+  //         resolve(req.response);
+  //       }
+  //       else {
+  //         reject(Error(req.statusText));
+  //       }
+  //     };
+  //     // Make the request
+  //     req.send();
+  //   });
+  // }
+
+  // // Use it!
+  // get('story.json').then(function(response) {
+  //   console.log("Success!", response);
+  // }, function(error) {
+  //   console.error("Failed!", error);
+  // });
 }
 
 
