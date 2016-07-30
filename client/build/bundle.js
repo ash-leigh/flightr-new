@@ -44,20 +44,20 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var FlightSearch = __webpack_require__(3);
-	var HotelSearch = __webpack_require__(5);
+	var FlightSearch = __webpack_require__(1);
+	var HotelSearch = __webpack_require__(3);
+	var ResultObject = __webpack_require__(5);
 	
-	var state = {
+	var keys = {
 	  skyscannerApiKey: 'co301553792687403420764331127549',
 	  expediaApiKey: '49anVGknDW2Ck8ATFBRAAMQ0Ls75wphH',
-	  resultQuotes: [],
 	}
 	
 	window.onload = function(){
 	  var flightSearch = new FlightSearch()
-	  flightSearch.getFlightData(state.skyscannerApiKey);
+	  flightSearch.getFlightData(keys);
 	  var hotelSearch = new HotelSearch()
-	  hotelSearch.getHotelData(state.expediaApiKey)
+	  hotelSearch.getHotelData(keys)
 	}
 	
 	
@@ -66,35 +66,43 @@
 
 
 /***/ },
-/* 1 */,
-/* 2 */,
-/* 3 */
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var FlightQuote = __webpack_require__(4);
+	var HotelSearch = __webpack_require__(3);
+	
+	var FlightQuote = __webpack_require__(2);
 	
 	var FlightSearch = function(data){
 	  this.quotes = [];
 	}
 	
 	FlightSearch.prototype = {
-	  getFlightData: function(apiKey){
+	  getFlightData: function(keys){
 	    console.log('attemping api')
-	    var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/LON/everywhere/2016-10-01/2016-10-14?apiKey=' + apiKey;
+	    var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/LON/everywhere/2016-10-01/2016-10-14?apiKey=' + keys.skyscannerApiKey;
 	    var request = new XMLHttpRequest();
 	    request.open('GET', url);
 	    request.onload = function(){
 	      if(request.status === 200){
 	        var jsonString = request.responseText;
 	        var flightData = JSON.parse(jsonString);
-	        console.log(flightData);
 	        var newFlightData = this.replaceCodes(flightData);
 	        this.populateQuotes(newFlightData);
-	        console.log(this)
-	      }
+	        //about to run an API expedia call for each qoute...hopefully
+	        this.quotes.forEach(function(quote){
+	          console.log('looping')
+	          var hotelSearch = new HotelSearch()
+	          hotelSearch.getHotelData(keys)
+	        })
+	
+	
+	      }//end of onload if
 	    }.bind(this)
 	    request.send(null);
 	  },
+	
+	
 	  replaceOriginCityCode: function(flightData){
 	    var quotes = flightData.Quotes;
 	    var cities = flightData.Places;
@@ -176,9 +184,11 @@
 	module.exports = FlightSearch;
 
 /***/ },
-/* 4 */
+/* 2 */
 /***/ function(module, exports) {
 
+	//nats comment//
+	
 	var FlightQuote = function(quoteQbject){
 	  this.originCity = quoteQbject.OutboundLeg.OriginId,
 	  this.destinationCity = quoteQbject.OutboundLeg.DestinationId,
@@ -201,19 +211,19 @@
 	module.exports = FlightQuote;
 
 /***/ },
-/* 5 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var HotelQuote = __webpack_require__(6);
+	var HotelQuote = __webpack_require__(4);
 	
 	var HotelSearch = function(data){
 	  this.quotes = []
 	}
 	
 	HotelSearch.prototype = {
-	  getHotelData: function(apiKey){
+	  getHotelData: function(keys){
 	    console.log('attemping hotel api')
-	    var url = 'http://terminal2.expedia.com/x/mhotels/search?city=EDINBURGH&checkInDate=2016-12-15&checkOutDate=2016-12-20&room1=9&apikey=' + apiKey;
+	    var url = 'http://terminal2.expedia.com/x/mhotels/search?city=EDINBURGH&checkInDate=2016-12-15&checkOutDate=2016-12-20&room1=9&apikey=' + keys.expediaApiKey;
 	    var request = new XMLHttpRequest();
 	    request.open('GET', url);
 	    request.onload = function(){
@@ -241,7 +251,7 @@
 
 
 /***/ },
-/* 6 */
+/* 4 */
 /***/ function(module, exports) {
 
 	var HotelQuote = function(quoteObject){
@@ -265,6 +275,32 @@
 	module.exports = HotelQuote;
 	
 
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var HotelSearch = __webpack_require__(3);
+	
+	var Result = function(flightObject){
+	  this.flightInfo = flightObject;
+	  this.flightPrice = 0;
+	  this.hotels = []
+	  this.country = null;
+	}
+	
+	Result.prototype = {
+	  initialise: function(){
+	    this.populateHotels();
+	  },
+	
+	  populateHotels: function(){
+	    console.log(this.flightInfo.Quotes)
+	  }
+	
+	}
+	
+	module.exports = Result;
 
 /***/ }
 /******/ ]);
