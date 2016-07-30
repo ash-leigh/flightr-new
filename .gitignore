@@ -1,5 +1,5 @@
-node_modules/*
-client/build/bundle.js
-client/build/bundle.js.map
-bundle.js.map
+*~
 bundle.js
+bundle.min.js
+bundle.js.map
+node_modules

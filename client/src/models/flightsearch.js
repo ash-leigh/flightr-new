@@ -9,7 +9,7 @@ var FlightSearch = function(data){
 FlightSearch.prototype = {
   getFlightData: function(keys){
     console.log('attemping api')
-    var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/LON/everywhere/2016-10-01/2016-10-14?apiKey=' + keys.skyscannerApiKey;
+    var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/EDI/everywhere/2016-10-01/2016-10-14?apiKey=' + keys.skyscannerApiKey;
     var request = new XMLHttpRequest();
     request.open('GET', url);
     request.onload = function(){
@@ -18,14 +18,7 @@ FlightSearch.prototype = {
         var flightData = JSON.parse(jsonString);
         var newFlightData = this.replaceCodes(flightData);
         this.populateQuotes(newFlightData);
-        //about to run an API expedia call for each qoute...hopefully
-        this.quotes.forEach(function(quote){
-          console.log('looping')
-          var hotelSearch = new HotelSearch()
-          hotelSearch.getHotelData(keys)
-        })
-
-
+        console.log(this)
       }//end of onload if
     }.bind(this)
     request.send(null);
