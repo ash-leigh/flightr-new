@@ -1,3 +1,5 @@
+//This is to test git ignore
+
 var FlightQuote = require('./flightquote.js');
 
 var FlightSearch = function(data){
