@@ -45,8 +45,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var FlightSearch = __webpack_require__(1);
-	var HotelSearch = __webpack_require__(2);
-	var ResultObject = __webpack_require__(5);
+	var HotelSearch = __webpack_require__(3);
+	var ResultObject = __webpack_require__(7);
 	
 	var keys = {
 	  skyscannerApiKey: 'co301553792687403420764331127549',
@@ -69,9 +69,9 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var HotelSearch = __webpack_require__(2);
+	var HotelSearch = __webpack_require__(3);
 	
-	var FlightQuote = __webpack_require__(4);
+	var FlightQuote = __webpack_require__(2);
 	
 	var FlightSearch = function(data){
 	  this.quotes = [];
@@ -185,9 +185,36 @@
 
 /***/ },
 /* 2 */
+/***/ function(module, exports) {
+
+	//nats comment//
+	
+	var FlightQuote = function(quoteQbject){
+	  this.originCity = quoteQbject.OutboundLeg.OriginId,
+	  this.destinationCity = quoteQbject.OutboundLeg.DestinationId,
+	  this.outboundDate = this.fixdate(quoteQbject.OutboundLeg.DepartureDate),
+	  this.inboundDate = this.fixdate(quoteQbject.InboundLeg.DepartureDate),
+	  this.price = quoteQbject.MinPrice,
+	  this.outboundCarrier = quoteQbject.OutboundLeg.CarrierIds[0],
+	  this.inboundCarrier = quoteQbject.InboundLeg.CarrierIds[0]
+	  this.inboundAirport = quoteQbject.InboundAirportName
+	  this.outboundAirport = quoteQbject.OutboundAirportName
+	}
+	
+	FlightQuote.prototype = {
+	  fixdate: function(date){
+	    dateArray = date.split('T')
+	    return dateArray[0]
+	  }
+	}
+	
+	module.exports = FlightQuote;
+
+/***/ },
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var HotelQuote = __webpack_require__(3);
+	var HotelQuote = __webpack_require__(4);
 	
 	var HotelSearch = function(data){
 	  this.quotes = []
@@ -224,7 +251,7 @@
 
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	var HotelQuote = function(quoteObject){
@@ -250,37 +277,12 @@
 
 
 /***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	//nats comment//
-	
-	var FlightQuote = function(quoteQbject){
-	  this.originCity = quoteQbject.OutboundLeg.OriginId,
-	  this.destinationCity = quoteQbject.OutboundLeg.DestinationId,
-	  this.outboundDate = this.fixdate(quoteQbject.OutboundLeg.DepartureDate),
-	  this.inboundDate = this.fixdate(quoteQbject.InboundLeg.DepartureDate),
-	  this.price = quoteQbject.MinPrice,
-	  this.outboundCarrier = quoteQbject.OutboundLeg.CarrierIds[0],
-	  this.inboundCarrier = quoteQbject.InboundLeg.CarrierIds[0]
-	  this.inboundAirport = quoteQbject.InboundAirportName
-	  this.outboundAirport = quoteQbject.OutboundAirportName
-	}
-	
-	FlightQuote.prototype = {
-	  fixdate: function(date){
-	    dateArray = date.split('T')
-	    return dateArray[0]
-	  }
-	}
-	
-	module.exports = FlightQuote;
-
-/***/ },
-/* 5 */
+/* 5 */,
+/* 6 */,
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var HotelSearch = __webpack_require__(2);
+	var HotelSearch = __webpack_require__(3);
 	
 	var Result = function(flightObject){
 	  this.flightInfo = flightObject;
