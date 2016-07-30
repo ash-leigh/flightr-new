@@ -44,8 +44,8 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var FlightSearch = __webpack_require__(3);
-	var HotelSearch = __webpack_require__(5);
+	var FlightSearch = __webpack_require__(1);
+	var HotelSearch = __webpack_require__(3);
 	
 	var state = {
 	  skyscannerApiKey: 'co301553792687403420764331127549',
@@ -66,12 +66,13 @@
 
 
 /***/ },
-/* 1 */,
-/* 2 */,
-/* 3 */
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var FlightQuote = __webpack_require__(4);
+	//This is to test git ignore
+	//so is this
+	
+	var FlightQuote = __webpack_require__(2);
 	
 	var FlightSearch = function(data){
 	  this.quotes = [];
@@ -176,9 +177,11 @@
 	module.exports = FlightSearch;
 
 /***/ },
-/* 4 */
+/* 2 */
 /***/ function(module, exports) {
 
+	//nats comment//
+	
 	var FlightQuote = function(quoteQbject){
 	  this.originCity = quoteQbject.OutboundLeg.OriginId,
 	  this.destinationCity = quoteQbject.OutboundLeg.DestinationId,
@@ -201,10 +204,10 @@
 	module.exports = FlightQuote;
 
 /***/ },
-/* 5 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var HotelQuote = __webpack_require__(6);
+	var HotelQuote = __webpack_require__(4);
 	
 	var HotelSearch = function(data){
 	  this.quotes = []
@@ -241,7 +244,7 @@
 
 
 /***/ },
-/* 6 */
+/* 4 */
 /***/ function(module, exports) {
 
 	var HotelQuote = function(quoteObject){
