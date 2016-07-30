@@ -44,8 +44,10 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var FlightSearch = __webpack_require__(3);
-	var HotelSearch = __webpack_require__(5);
+	var FlightSearch = __webpack_require__(1);
+	var HotelSearch = __webpack_require__(3);
+	
+	var InitialSearchView = __webpack_require__(5);
 	
 	var state = {
 	  skyscannerApiKey: 'co301553792687403420764331127549',
@@ -54,10 +56,14 @@
 	}
 	
 	window.onload = function(){
-	  var flightSearch = new FlightSearch()
-	  flightSearch.getFlightData(state.skyscannerApiKey);
-	  var hotelSearch = new HotelSearch()
-	  hotelSearch.getHotelData(state.expediaApiKey)
+	  var initialSearchView = new InitialSearchView();
+	  console.log(initialSearchView)
+	  var searchObject = initialSearchView.handleSearchClick();
+	  console.log(searchObject);
+	  // var flightSearch = new FlightSearch()
+	  // flightSearch.getFlightData(state.skyscannerApiKey);
+	  // var hotelSearch = new HotelSearch()
+	  // hotelSearch.getHotelData(state.expediaApiKey)
 	}
 	
 	
@@ -66,12 +72,13 @@
 
 
 /***/ },
-/* 1 */,
-/* 2 */,
-/* 3 */
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var FlightQuote = __webpack_require__(4);
+	//This is to test git ignore
+	//so is this
+	
+	var FlightQuote = __webpack_require__(2);
 	
 	var FlightSearch = function(data){
 	  this.quotes = [];
@@ -176,9 +183,11 @@
 	module.exports = FlightSearch;
 
 /***/ },
-/* 4 */
+/* 2 */
 /***/ function(module, exports) {
 
+	//nats comment//
+	
 	var FlightQuote = function(quoteQbject){
 	  this.originCity = quoteQbject.OutboundLeg.OriginId,
 	  this.destinationCity = quoteQbject.OutboundLeg.DestinationId,
@@ -201,10 +210,10 @@
 	module.exports = FlightQuote;
 
 /***/ },
-/* 5 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var HotelQuote = __webpack_require__(6);
+	var HotelQuote = __webpack_require__(4);
 	
 	var HotelSearch = function(data){
 	  this.quotes = []
@@ -241,7 +250,7 @@
 
 
 /***/ },
-/* 6 */
+/* 4 */
 /***/ function(module, exports) {
 
 	var HotelQuote = function(quoteObject){
@@ -263,6 +272,71 @@
 	}
 	
 	module.exports = HotelQuote;
+	
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InitialSearchParams = __webpack_require__(6);
+	
+	var InitialSearchView = function(){
+	  this.latLng = this.getUserLatLng();
+	}
+	
+	InitialSearchView.prototype = {
+	  handleSearchClick: function(){
+	    var button = document.getElementById('initialSearchButton');
+	    button.onclick = function(){
+	      this.newSearchParams();
+	    }.bind(this);
+	
+	  },
+	  getStartDate: function(){
+	    var startDate = document.getElementById('searchStartDateInput').value;
+	    return startDate
+	  },
+	  getEndDate: function(){
+	    var endDate = document.getElementById('searchEndDateInput').value;
+	    return endDate
+	  }, 
+	  getUserLatLng: function(){
+	    console.log('entered function')
+	    var latLngString = navigator.geolocation.getCurrentPosition(function(position){this.latLng = position.coords.latitude + ',' + position.coords.longitude + '-latlong';
+	    }.bind(this))
+	  },
+	  newSearchParams: function(){
+	    // var latLng = this.getUserLatLng();
+	    console.log(this.latLng);
+	    // var startDate = this.getStartDate();
+	    // var endDate = this.getEndDate();
+	    // var initialSearchParams = new InitialSearchParams(latLng, startDate, endDate);
+	    // return initialSearchParams;
+	  }
+	}
+	
+	module.exports = InitialSearchView;
+	
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	var InitialSearchParams = function(latLng, startDate, endDate){
+	  this.origin = latLng;
+	  this.startDate = startDate;
+	  this.endDate = endDate;
+	}
+	
+	InitialSearchParams.prototype = {
+	  
+	}
+	
+	module.exports = InitialSearchParams;
+	
+	
 	
 
 
