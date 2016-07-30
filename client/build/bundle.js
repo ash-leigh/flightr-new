@@ -282,7 +282,7 @@
 	var InitialSearchParams = __webpack_require__(6);
 	
 	var InitialSearchView = function(){
-	  this.latLng = this.getUserLatLng();
+	  
 	}
 	
 	InitialSearchView.prototype = {
@@ -303,12 +303,13 @@
 	  }, 
 	  getUserLatLng: function(){
 	    console.log('entered function')
-	    var latLngString = navigator.geolocation.getCurrentPosition(function(position){this.latLng = position.coords.latitude + ',' + position.coords.longitude + '-latlong';
+	    navigator.geolocation.getCurrentPosition(function(position){var latLng = position.coords.latitude + ',' + position.coords.longitude + '-latlong';
+	      console.log(latLng)
 	    }.bind(this))
 	  },
 	  newSearchParams: function(){
-	    // var latLng = this.getUserLatLng();
-	    console.log(this.latLng);
+	    var latLng = this.getUserLatLng();
+	    console.log(latLng);
 	    // var startDate = this.getStartDate();
 	    // var endDate = this.getEndDate();
 	    // var initialSearchParams = new InitialSearchParams(latLng, startDate, endDate);
@@ -317,6 +318,16 @@
 	}
 	
 	module.exports = InitialSearchView;
+	
+	
+	// this.setCenter = function(){
+	//   navigator.geolocation.getCurrentPosition(function(position){
+	//     var pos = {lat: position.coords.latitude, lng: position.coords.longitude};
+	      // 
+	//     this.map.googleMap.panTo(pos);
+	//     // map.addMarker(pos);
+	//   }.bind(this))
+	// }
 	
 
 
