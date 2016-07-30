@@ -8,21 +8,22 @@ var InitialSearchView = require('./views/initialsearchview.js');
 var keys = {
   skyscannerApiKey: 'co301553792687403420764331127549',
   expediaApiKey: '49anVGknDW2Ck8ATFBRAAMQ0Ls75wphH',
+  userSearches: [],
 }
 
 window.onload = function(){
 
-  var flightSearch = new FlightSearch()
-  flightSearch.getFlightData(keys);
-  var hotelSearch = new HotelSearch()
-  hotelSearch.getHotelData(keys)
+  // var flightSearch = new FlightSearch()
+  // flightSearch.getFlightData(keys);
+  // var hotelSearch = new HotelSearch()
+  // hotelSearch.getHotelData(keys)
   
-  hotelSearch.getHotelData(keys).then(function(response) {
-    //succesfull code goes here.
-    console.log("Look here:", hotelSearch);
-  }, function(error) {
-    console.error("Failed!", error);
-  });
+  // hotelSearch.getHotelData(keys).then(function(response) {
+  //   //succesfull code goes here.
+  //   console.log("Look here:", hotelSearch);
+  // }, function(error) {
+  //   console.error("Failed!", error);
+  // });
 
   // function get(url) {
   //   return new Promise(function(resolve, reject) {
@@ -49,11 +50,26 @@ window.onload = function(){
   //   console.error("Failed!", error);
   // });
   var initialSearchView = new InitialSearchView();
-  console.log(initialSearchView)
-  var searchObject = initialSearchView.handleSearchClick();
-  console.log(searchObject);
+  // console.log(initialSearchView)
 
+  function getSearch(){
+    var save = function(object){
+      keys.userSearches.push(object);
+      console.log(keys);
+    }
+    var searchObject = initialSearchView.handleSearchClick();
+    save(searchObject)
+  }
+
+ 
+
+  getSearch()
+  console.log(keys);
 }
+
+
+
+
 
 
 

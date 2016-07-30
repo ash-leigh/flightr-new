@@ -8,9 +8,20 @@ InitialSearchView.prototype = {
   handleSearchClick: function(){
     var button = document.getElementById('initialSearchButton');
     button.onclick = function(){
-      this.newSearchParams();
+      this.getUserLatLng();
     }.bind(this);
-
+  },
+  getUserLatLng: function(){
+    var constructString = function(lat, lng){
+      var string = lat + ',' + lng + '-latlong';
+      return string;
+    }
+    navigator.geolocation.getCurrentPosition(function(position){
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude;
+      var latLng = constructString(lat, lng)
+      this.newSearchParams(latLng);
+    }.bind(this))
   },
   getStartDate: function(){
     var startDate = document.getElementById('searchStartDateInput').value;
@@ -20,31 +31,12 @@ InitialSearchView.prototype = {
     var endDate = document.getElementById('searchEndDateInput').value;
     return endDate
   }, 
-  getUserLatLng: function(){
-    console.log('entered function')
-    navigator.geolocation.getCurrentPosition(function(position){var latLng = position.coords.latitude + ',' + position.coords.longitude + '-latlong';
-      console.log(latLng)
-    }.bind(this))
-  },
-  newSearchParams: function(){
-    var latLng = this.getUserLatLng();
-    console.log(latLng);
-    // var startDate = this.getStartDate();
-    // var endDate = this.getEndDate();
-    // var initialSearchParams = new InitialSearchParams(latLng, startDate, endDate);
-    // return initialSearchParams;
+  newSearchParams: function(latLng){
+    var initialSearchParams = new InitialSearchParams(latLng, this.getStartDate(), this.getEndDate());
+    return initialSearchParams;
   }
 }
 
 module.exports = InitialSearchView;
 
-
-// this.setCenter = function(){
-//   navigator.geolocation.getCurrentPosition(function(position){
-//     var pos = {lat: position.coords.latitude, lng: position.coords.longitude};
-      // 
-//     this.map.googleMap.panTo(pos);
-//     // map.addMarker(pos);
-//   }.bind(this))
-// }
 
