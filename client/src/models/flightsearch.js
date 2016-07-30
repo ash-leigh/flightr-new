@@ -1,5 +1,4 @@
-//This is to test git ignore
-//so is this
+var HotelSearch = require('./hotelsearch.js');
 
 var FlightQuote = require('./flightquote.js');
 
@@ -8,23 +7,31 @@ var FlightSearch = function(data){
 }
 
 FlightSearch.prototype = {
-  getFlightData: function(apiKey){
+  getFlightData: function(keys){
     console.log('attemping api')
-    var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/LON/everywhere/2016-10-01/2016-10-14?apiKey=' + apiKey;
+    var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/LON/everywhere/2016-10-01/2016-10-14?apiKey=' + keys.skyscannerApiKey;
     var request = new XMLHttpRequest();
     request.open('GET', url);
     request.onload = function(){
       if(request.status === 200){
         var jsonString = request.responseText;
         var flightData = JSON.parse(jsonString);
-        console.log(flightData);
         var newFlightData = this.replaceCodes(flightData);
         this.populateQuotes(newFlightData);
-        console.log(this)
-      }
+        //about to run an API expedia call for each qoute...hopefully
+        this.quotes.forEach(function(quote){
+          console.log('looping')
+          var hotelSearch = new HotelSearch()
+          hotelSearch.getHotelData(keys)
+        })
+
+
+      }//end of onload if
     }.bind(this)
     request.send(null);
   },
+
+
   replaceOriginCityCode: function(flightData){
     var quotes = flightData.Quotes;
     var cities = flightData.Places;

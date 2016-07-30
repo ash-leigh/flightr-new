@@ -5,9 +5,9 @@ var HotelSearch = function(data){
 }
 
 HotelSearch.prototype = {
-  getHotelData: function(apiKey){
+  getHotelData: function(keys){
     console.log('attemping hotel api')
-    var url = 'http://terminal2.expedia.com/x/mhotels/search?city=EDINBURGH&checkInDate=2016-12-15&checkOutDate=2016-12-20&room1=9&apikey=' + apiKey;
+    var url = 'http://terminal2.expedia.com/x/mhotels/search?city=EDINBURGH&checkInDate=2016-12-15&checkOutDate=2016-12-20&room1=9&apikey=' + keys.expediaApiKey;
     var request = new XMLHttpRequest();
     request.open('GET', url);
     request.onload = function(){

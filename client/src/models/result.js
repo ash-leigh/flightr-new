@@ -1,10 +1,20 @@
-var Result = function(){
-  this.flight = 
+var HotelSearch = require('./hotelsearch.js');
+
+var Result = function(flightObject){
+  this.flightInfo = flightObject;
+  this.flightPrice = 0;
   this.hotels = []
-  this.price = 
+  this.country = null;
 }
 
 Result.prototype = {
+  initialise: function(){
+    this.populateHotels();
+  },
+
+  populateHotels: function(){
+    console.log(this.flightInfo.Quotes)
+  }
 
 }
 
