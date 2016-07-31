@@ -7,17 +7,19 @@ var InitialSearchView = function(){}
 InitialSearchView.prototype = {
   handleSearchClick: function(flightSearch, hotelSearch, keys){
     var button = document.getElementById('initialSearchButton');
+
+    getPositionData = function(){
+        var startDate = document.getElementById('searchStartDateInput').value
+        var endDate = document.getElementById('searchEndDateInput').value
+        var origin = JSON.parse(localStorage.getItem('locationData')) || {origin: "55.9660935,-3.1767301999999997-latlong"}
+        var locationData = {origin: origin.origin, startDate: startDate, endDate: endDate}
+        return locationData;
+    }
+
     button.onclick = function(){
       console.log('clicked')
-      //get users geolocation...
-      this.getUserLatLng().then(function(response){
-        //then get that info into a usable object
-        locationData = this.newSearchParams(response, this.getStartDate(), this.getEndDate())
-        //request get flight data, once that is complete conintue....
+        var locationData = getPositionData();
         flightSearch.getFlightData(keys, locationData).then(function(response) {
-          console.log("LOCATION DATA:",locationData)
-          //return the quotes array to the next promise handler
-          console.log('test',response)
           return response.quotes
         }).then(function(response){
           //loop through each quote and call a function to create a results object
@@ -34,7 +36,6 @@ InitialSearchView.prototype = {
           retrievedObject.push(allResults);
           localStorage.setItem('allSearches', JSON.stringify(retrievedObject));
         });
-      }.bind(this))
     }.bind(this);
   },
 

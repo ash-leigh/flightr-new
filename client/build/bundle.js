@@ -73,7 +73,6 @@
 	  allResults.populateFromLocal();
 	  allResults.orderByFlightPrice();
 	  allResults.orderHotelsbyPrice();
-	  allResults.orderByTotalPrice();
 	  allResults.orberByCheapestPackage();
 	  console.log(allResults)
 	
@@ -393,10 +392,6 @@
 	      result.hotels = _.sortBy(result.guestRating, 'nightlyPrice')
 	    })
 	  },
-	
-	  orderByTotalPrice: function(){
-	
-	  }
 	}
 	
 	module.exports = AllResults;
@@ -1340,17 +1335,19 @@
 	InitialSearchView.prototype = {
 	  handleSearchClick: function(flightSearch, hotelSearch, keys){
 	    var button = document.getElementById('initialSearchButton');
+	
+	    getPositionData = function(){
+	        var startDate = document.getElementById('searchStartDateInput').value
+	        var endDate = document.getElementById('searchEndDateInput').value
+	        var origin = JSON.parse(localStorage.getItem('locationData')) || {origin: "55.9660935,-3.1767301999999997-latlong"}
+	        var locationData = {origin: origin.origin, startDate: startDate, endDate: endDate}
+	        return locationData;
+	    }
+	
 	    button.onclick = function(){
 	      console.log('clicked')
-	      //get users geolocation...
-	      this.getUserLatLng().then(function(response){
-	        //then get that info into a usable object
-	        locationData = this.newSearchParams(response, this.getStartDate(), this.getEndDate())
-	        //request get flight data, once that is complete conintue....
+	        var locationData = getPositionData();
 	        flightSearch.getFlightData(keys, locationData).then(function(response) {
-	          console.log("LOCATION DATA:",locationData)
-	          //return the quotes array to the next promise handler
-	          console.log('test',response)
 	          return response.quotes
 	        }).then(function(response){
 	          //loop through each quote and call a function to create a results object
@@ -1367,7 +1364,6 @@
 	          retrievedObject.push(allResults);
 	          localStorage.setItem('allSearches', JSON.stringify(retrievedObject));
 	        });
-	      }.bind(this))
 	    }.bind(this);
 	  },
 	
@@ -1499,10 +1495,6 @@
 	      result.hotels = _.sortBy(result.guestRating, 'nightlyPrice')
 	    })
 	  },
-	
-	  orderByTotalPrice: function(){
-	
-	  }
 	}
 	
 	module.exports = AllResults;
@@ -1530,9 +1522,7 @@
 /* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var InitialUserPosition = function(){
-	
-	}
+	var InitialUserPosition = function(){}
 	
 	InitialUserPosition.prototype = {
 	  getUserLatLng: function(){
@@ -1554,8 +1544,9 @@
 	            // return component.long_name;
 	            var InitialUserPositionView = __webpack_require__(20); 
 	            var positionView = new InitialUserPositionView();
-	            positionView.displayLocation(component.long_name)
-	            //save local 
+	            positionView.displayLocation(component.long_name);
+	            var locationData = {origin: lat + "," + lng + "-latlong" }
+	            localStorage.setItem('locationData', JSON.stringify(locationData));
 	          }
 	        })
 	      })

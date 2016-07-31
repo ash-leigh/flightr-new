@@ -1,6 +1,4 @@
-var InitialUserPosition = function(){
-
-}
+var InitialUserPosition = function(){}
 
 InitialUserPosition.prototype = {
   getUserLatLng: function(){
@@ -22,8 +20,9 @@ InitialUserPosition.prototype = {
             // return component.long_name;
             var InitialUserPositionView = require('../views/initialuserpositionview.js'); 
             var positionView = new InitialUserPositionView();
-            positionView.displayLocation(component.long_name)
-            //save local 
+            positionView.displayLocation(component.long_name);
+            var locationData = {origin: lat + "," + lng + "-latlong" }
+            localStorage.setItem('locationData', JSON.stringify(locationData));
           }
         })
       })

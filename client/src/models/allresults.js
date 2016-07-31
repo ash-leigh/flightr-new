@@ -58,10 +58,6 @@ AllResults.prototype = {
       result.hotels = _.sortBy(result.guestRating, 'nightlyPrice')
     })
   },
-
-  orderByTotalPrice: function(){
-
-  }
 }
 
 module.exports = AllResults;

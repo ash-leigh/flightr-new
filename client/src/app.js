@@ -27,7 +27,6 @@ window.onload = function(){
   allResults.populateFromLocal();
   allResults.orderByFlightPrice();
   allResults.orderHotelsbyPrice();
-  allResults.orderByTotalPrice();
   allResults.orberByCheapestPackage();
   console.log(allResults)
 
