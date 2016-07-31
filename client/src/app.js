@@ -1,59 +1,43 @@
 var FlightSearch = require('./models/flightsearch.js');
 var HotelSearch = require('./models/hotelsearch.js');
 var ResultObject = require('./models/result.js');
-
+var AllResultsObject = require('./models/result.js');
 var InitialSearchView = require('./views/initialsearchview.js');
+var InitialUserPositionView = require('./views/initialuserpositionview.js');
+var InitialUserPosition = require('./models/initialuserposition.js');
 
 
 var keys = {
   skyscannerApiKey: 'co301553792687403420764331127549',
-  expediaApiKey: '49anVGknDW2Ck8ATFBRAAMQ0Ls75wphH',
+  expediaApiKey: '49anVGknDW2Ck8ATFBRAAMQ0Ls75wphH'
 }
 
 window.onload = function(){
-
+  //object loads here
+  var allResults = new AllResultsObject();
   var flightSearch = new FlightSearch()
-  flightSearch.getFlightData(keys);
   var hotelSearch = new HotelSearch()
-  hotelSearch.getHotelData(keys)
-  
-  hotelSearch.getHotelData(keys).then(function(response) {
-    //succesfull code goes here.
-    console.log("Look here:", hotelSearch);
-  }, function(error) {
-    console.error("Failed!", error);
-  });
-
-  // function get(url) {
-  //   return new Promise(function(resolve, reject) {
-  //     var req = new XMLHttpRequest();
-  //     req.open('GET', url);
-
-  //     req.onload = function() {
-  //       if (req.status == 200) {
-  //         resolve(req.response);
-  //       }
-  //       else {
-  //         reject(Error(req.statusText));
-  //       }
-  //     };
-  //     // Make the request
-  //     req.send();
-  //   });
-  // }
-
-  // // Use it!
-  // get('story.json').then(function(response) {
-  //   console.log("Success!", response);
-  // }, function(error) {
-  //   console.error("Failed!", error);
-  // });
+  //event listeners here
   var initialSearchView = new InitialSearchView();
-  console.log(initialSearchView)
-  var searchObject = initialSearchView.handleSearchClick();
-  console.log(searchObject);
+  initialSearchView.handleSearchClick(flightSearch, hotelSearch, keys);
+  
+  var initialUserPosition = new InitialUserPosition();
+   initialUserPosition.getUserLatLng();
+  //area for Joe to play with
 
+
+  //area for ash to play with
+
+
+  //area for nat to play with
+
+
+  //
 }
+
+
+
+
 
 
 

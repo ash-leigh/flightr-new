@@ -1,50 +1,77 @@
 var InitialSearchParams = require('../models/initialsearch.js');
+var ResultObject = require('../models/result.js');
+var AllResultsObject = require('../models/allresults.js');
 
-var InitialSearchView = function(){
-  
-}
+var InitialSearchView = function(){}
 
 InitialSearchView.prototype = {
-  handleSearchClick: function(){
+  handleSearchClick: function(flightSearch, hotelSearch, keys){
     var button = document.getElementById('initialSearchButton');
     button.onclick = function(){
-      this.newSearchParams();
+      console.log('clicked')
+      //get users geolocation...
+      //can we get lat
+      this.getUserLatLng().then(function(response){
+        //then get that info into a usable object
+        locationData = this.newSearchParams(response, this.getStartDate(), this.getEndDate())
+        //request get flight data, once that is complete conintue....
+        flightSearch.getFlightData(keys, locationData).then(function(response) {
+          //return the quotes array to the next promise handler
+          console.log('test',response)
+          return response.quotes
+        }).then(function(response){
+          //loop through each quote and call a function to create a results object
+          //then put that in array.
+          //solution to the beast....
+          return Promise.all(response.map(function (quote) {
+              return hotelSearch.getHotelData(keys, quote)
+            }));
+        }).then(function (arrayOfResults) {
+          //do stuff here with the array of result objects
+          //save somewhere?
+          var allResults = new AllResultsObject();
+          allResults.results = arrayOfResults
+          console.log('all results:',allResults)
+          //save locally.
+        });;
+      }.bind(this))
     }.bind(this);
 
   },
+
+  constructString: function(lat, lng){
+    var string = lat + ',' + lng + '-latlong';
+    return string;
+  },
+
+  getUserLatLng: function(){
+    return new Promise(function(resolve, reject) {
+      navigator.geolocation.getCurrentPosition(function(position){
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        var latLng = this.constructString(lat, lng)
+        // this.newSearchParams(latLng);
+        resolve(latLng)
+      }.bind(this))
+    }.bind(this))//end of promise
+  },
+
   getStartDate: function(){
     var startDate = document.getElementById('searchStartDateInput').value;
     return startDate
   },
+
   getEndDate: function(){
     var endDate = document.getElementById('searchEndDateInput').value;
     return endDate
   }, 
-  getUserLatLng: function(){
-    console.log('entered function')
-    navigator.geolocation.getCurrentPosition(function(position){var latLng = position.coords.latitude + ',' + position.coords.longitude + '-latlong';
-      console.log(latLng)
-    }.bind(this))
-  },
-  newSearchParams: function(){
-    var latLng = this.getUserLatLng();
-    console.log(latLng);
-    // var startDate = this.getStartDate();
-    // var endDate = this.getEndDate();
-    // var initialSearchParams = new InitialSearchParams(latLng, startDate, endDate);
-    // return initialSearchParams;
+  
+  newSearchParams: function(latLng){
+    var initialSearchParams = new InitialSearchParams(latLng, this.getStartDate(), this.getEndDate());
+    return initialSearchParams;
   }
 }
 
 module.exports = InitialSearchView;
 
-
-// this.setCenter = function(){
-//   navigator.geolocation.getCurrentPosition(function(position){
-//     var pos = {lat: position.coords.latitude, lng: position.coords.longitude};
-      // 
-//     this.map.googleMap.panTo(pos);
-//     // map.addMarker(pos);
-//   }.bind(this))
-// }
 
