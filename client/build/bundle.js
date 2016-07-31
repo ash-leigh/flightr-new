@@ -71,7 +71,11 @@
 	   initialUserPosition.getUserLatLng();
 	  //area for Joe to play with
 	  allResults.populateFromLocal();
-	  console.log('populated:', allResults)
+	  allResults.orderByFlightPrice();
+	  allResults.orderHotelsbyPrice();
+	  allResults.orderByTotalPrice();
+	  allResults.orberByCheapestPackage();
+	  console.log(allResults)
 	
 	  //area for ash to play with
 	
@@ -346,10 +350,52 @@
 	      return;
 	    }
 	    this.results = retrievedResults.results;
+	    this.createCheapestPackage()
+	  },
+	
+	  createCheapestPackage: function(){
+	    this.orderHotelsbyPrice
+	    this.results.forEach(function(result){
+	      if(result.hotels.length > 0){
+	        result.cheapestPackage = Math.floor(result.flightPrice) + Math.floor(result.hotels[0].nightlyPrice);
+	      }
+	    })
+	  },
+	
+	  orberByCheapestPackage: function(){
+	    this.results = _.sortBy(this.results, 'cheapestPackage')
 	  },
 	
 	  orderByFlightPrice: function(){
-	    
+	    this.results = _.sortBy(this.results, 'flightPrice')
+	  },
+	
+	  orderHotelsbyPrice: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.hotels, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderHotelsbyStarRating: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.starRating, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderHotelsbyPercentRating: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.percentRecommended, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderHotelsbyGuestRating: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.guestRating, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderByTotalPrice: function(){
+	
 	  }
 	}
 	
@@ -1302,6 +1348,7 @@
 	        locationData = this.newSearchParams(response, this.getStartDate(), this.getEndDate())
 	        //request get flight data, once that is complete conintue....
 	        flightSearch.getFlightData(keys, locationData).then(function(response) {
+	          console.log("LOCATION DATA:",locationData)
 	          //return the quotes array to the next promise handler
 	          console.log('test',response)
 	          return response.quotes
@@ -1409,10 +1456,52 @@
 	      return;
 	    }
 	    this.results = retrievedResults.results;
+	    this.createCheapestPackage()
+	  },
+	
+	  createCheapestPackage: function(){
+	    this.orderHotelsbyPrice
+	    this.results.forEach(function(result){
+	      if(result.hotels.length > 0){
+	        result.cheapestPackage = Math.floor(result.flightPrice) + Math.floor(result.hotels[0].nightlyPrice);
+	      }
+	    })
+	  },
+	
+	  orberByCheapestPackage: function(){
+	    this.results = _.sortBy(this.results, 'cheapestPackage')
 	  },
 	
 	  orderByFlightPrice: function(){
-	    
+	    this.results = _.sortBy(this.results, 'flightPrice')
+	  },
+	
+	  orderHotelsbyPrice: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.hotels, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderHotelsbyStarRating: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.starRating, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderHotelsbyPercentRating: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.percentRecommended, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderHotelsbyGuestRating: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.guestRating, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderByTotalPrice: function(){
+	
 	  }
 	}
 	
@@ -1466,6 +1555,7 @@
 	            var InitialUserPositionView = __webpack_require__(20); 
 	            var positionView = new InitialUserPositionView();
 	            positionView.displayLocation(component.long_name)
+	            //save local 
 	          }
 	        })
 	      })

@@ -23,6 +23,7 @@ InitialUserPosition.prototype = {
             var InitialUserPositionView = require('../views/initialuserpositionview.js'); 
             var positionView = new InitialUserPositionView();
             positionView.displayLocation(component.long_name)
+            //save local 
           }
         })
       })

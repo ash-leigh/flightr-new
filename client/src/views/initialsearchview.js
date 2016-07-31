@@ -15,6 +15,7 @@ InitialSearchView.prototype = {
         locationData = this.newSearchParams(response, this.getStartDate(), this.getEndDate())
         //request get flight data, once that is complete conintue....
         flightSearch.getFlightData(keys, locationData).then(function(response) {
+          console.log("LOCATION DATA:",locationData)
           //return the quotes array to the next promise handler
           console.log('test',response)
           return response.quotes

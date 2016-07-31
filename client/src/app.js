@@ -25,7 +25,11 @@ window.onload = function(){
    initialUserPosition.getUserLatLng();
   //area for Joe to play with
   allResults.populateFromLocal();
-  console.log('populated:', allResults)
+  allResults.orderByFlightPrice();
+  allResults.orderHotelsbyPrice();
+  allResults.orderByTotalPrice();
+  allResults.orberByCheapestPackage();
+  console.log(allResults)
 
   //area for ash to play with
 
