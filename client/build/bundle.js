@@ -48,50 +48,32 @@
 	var HotelSearch = __webpack_require__(2);
 	var ResultObject = __webpack_require__(4);
 	var AllResultsObject = __webpack_require__(4);
-	
 	var InitialSearchView = __webpack_require__(17);
 	
 	
 	var keys = {
 	  skyscannerApiKey: 'co301553792687403420764331127549',
-	  expediaApiKey: '49anVGknDW2Ck8ATFBRAAMQ0Ls75wphH',
-	  userSearches: [],
+	  expediaApiKey: '49anVGknDW2Ck8ATFBRAAMQ0Ls75wphH'
 	}
 	
 	window.onload = function(){
+	  //object loads here
 	  var allResults = new AllResultsObject();
-	
 	  var flightSearch = new FlightSearch()
-	  flightSearch.getFlightData(keys);
 	  var hotelSearch = new HotelSearch()
-	  hotelSearch.getHotelData(keys)
-	
-	
-	  // flightSearch.getFlightData(keys).then(function(response) {
-	  //   //returns once flightdata has loaded, responce = flightsearch object
-	  //   flightSearch.quotes.forEach(function(quote){
-	  //     var result = new ResultObject(quote)
-	  //     //nesting promises. for each qoute go and get hotels for dest city
-	  //     hotelSearch.getHotelData(keys, quote).then(function(response) {
-	  //       //go and create a results object
-	  //       // console.log('got hotel data')
-	  //       result.hotels = hotelSearch.quotes;
-	  //       console.log(result)
-	  //       allResults.results.push(result)
-	  //     })
-	  //   })//end of forEach loop
-	  //   console.log('ALL RESULTS', allResults)
-	  // }, function(error) {
-	  //   console.error("Failed!", error);
-	  // });
-	
-	
+	  //event listeners here
 	  var initialSearchView = new InitialSearchView();
+	  initialSearchView.handleSearchClick(flightSearch, hotelSearch, keys);
+	  //area for Joe to play with
 	
-	  initialSearchView.getUserLatLng().then(function(response){
-	    AshleighsObject = initialSearchView.newSearchParams(response)
-	    console.log(AshleighsObject)
-	  })
+	
+	  //area for ash to play with
+	
+	
+	  //area for nat to play with
+	
+	
+	  //
 	}
 	
 	
@@ -108,7 +90,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var HotelSearch = __webpack_require__(2);
-	
 	var FlightQuote = __webpack_require__(16);
 	
 	var FlightSearch = function(data){
@@ -116,33 +97,36 @@
 	}
 	
 	FlightSearch.prototype = {
-	  getFlightData: function(keys){
+	  getFlightData: function(keys, locationData){
+	    console.log('LOCATION DATA:', locationData)
 	    return new Promise(function(resolve, reject) {
-	    var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/EDI/everywhere/2016-10-01/2016-10-14?apiKey=' + keys.skyscannerApiKey;
-	    var request = new XMLHttpRequest();
-	    request.open('GET', url);
-	    request.onload = function(){
-	      if(request.status === 200){
-	        var jsonString = request.responseText;
-	        var flightData = JSON.parse(jsonString);
-	        var newFlightData = this.replaceCodes(flightData);
-	        this.populateQuotes(newFlightData);
-	        resolve(this)
-	      }//end of onload if
-	    }.bind(this)
-	    request.send(null);
+	      var url = this.createSkyscannerUrl(locationData) 
+	      url = url + keys.skyscannerApiKey;
+	      var request = new XMLHttpRequest();
+	      request.open('GET', url);
+	      request.onload = function(){
+	        if(request.status === 200){
+	          var jsonString = request.responseText;
+	          var flightData = JSON.parse(jsonString);
+	          var newFlightData = this.replaceCodes(flightData);
+	          this.populateQuotes(newFlightData);
+	          resolve(this)
+	        }//end of onload if
+	      }.bind(this)
+	      request.send(null);
 	    }.bind(this))//end of promise
 	  },
 	
+	  createSkyscannerUrl: function(locationData){
+	    var url = 'http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/en-GB/' + locationData.origin + '/everywhere/' + locationData.startDate + '/' + locationData.endDate + '?apiKey='
+	    return url;
+	  },
 	
 	  replaceOriginCityCode: function(flightData){
 	    var quotes = flightData.Quotes;
 	    var cities = flightData.Places;
-	
 	    quotes.forEach(function(quote){
-	
 	      cities.forEach(function(city){
-	
 	        if(quote.OutboundLeg.OriginId === city.PlaceId){
 	          quote.OutboundLeg.OriginId = city.CityName;
 	          quote.InboundLeg.DestinationId = city.CityName;
@@ -152,14 +136,12 @@
 	    })
 	    return flightData;
 	  },
+	
 	  replaceDestinationCityCode: function(flightData){
 	    var quotes = flightData.Quotes;
 	    var cities = flightData.Places;
-	
 	    quotes.forEach(function(quote){
-	
 	      cities.forEach(function(city){
-	
 	        if(quote.OutboundLeg.DestinationId === city.PlaceId){
 	          quote.OutboundLeg.DestinationId = city.CityName;
 	          quote.InboundLeg.OriginId = city.CityName;
@@ -169,14 +151,12 @@
 	    })
 	    return flightData;
 	  },
+	
 	  replaceOutboundCarrierCode: function(flightData){
 	    var quotes = flightData.Quotes;
 	    var carriers = flightData.Carriers;
-	
 	    quotes.forEach(function(quote){
-	
 	      carriers.forEach(function(carrier){
-	
 	        if(quote.OutboundLeg.CarrierIds[0] === carrier.CarrierId){
 	          quote.OutboundLeg.CarrierIds[0] = carrier.Name;
 	        }
@@ -184,14 +164,12 @@
 	    })
 	    return flightData;
 	  },
+	
 	  replaceInboundCarrierCode: function(flightData){
 	    var quotes = flightData.Quotes;
 	    var carriers = flightData.Carriers;
-	
 	    quotes.forEach(function(quote){
-	
 	      carriers.forEach(function(carrier){
-	
 	        if(quote.InboundLeg.CarrierIds[0] === carrier.CarrierId){
 	          quote.InboundLeg.CarrierIds[0] = carrier.Name;
 	        }
@@ -199,6 +177,7 @@
 	    })
 	    return flightData;
 	  },
+	
 	  replaceCodes: function(flightData){
 	    var flightData = this.replaceOriginCityCode(flightData);
 	    flightData = this.replaceDestinationCityCode(flightData);
@@ -206,6 +185,7 @@
 	    flightData = this.replaceInboundCarrierCode(flightData);
 	    return flightData;
 	  },
+	
 	  populateQuotes: function(flightData){
 	    flightData.Quotes.forEach(function(flight){
 	      this.quotes.push(new FlightQuote(flight))
@@ -233,7 +213,6 @@
 	    return new Promise(function(resolve, reject) {
 	      var url = this.getUrl(flightQuote)
 	      url = url + keys.expediaApiKey;
-	
 	      var request = new XMLHttpRequest();
 	      request.open('GET', url);
 	      request.onload = function(){
@@ -242,12 +221,24 @@
 	          var result = new AllResultsObject();
 	          var jsonString = request.responseText;
 	          var hotelData = JSON.parse(jsonString);
-	          this.populateQuotes(hotelData);
-	          resolve(this)
+	          console.log('Creating Hotel Objects and then result Objects')
+	          resultObject = this.createResultObject(hotelData, flightQuote)
+	          //pass data to views functions to display indiv results as they load here
+	          //nats view function here
+	          //resolve must be called last
+	          resolve(resultObject)
 	        }
 	      }.bind(this)
 	      request.send(null);
 	    }.bind(this))//end of promise
+	  },
+	
+	  createResultObject: function(hotelData, flightQuote){
+	    var resultObject = new ResultObject();
+	    resultObject.hotels = this.populateQuotes(hotelData);
+	    resultObject.flightInfo = flightQuote;
+	    resultObject.flightPrice = flightQuote.price;
+	    return resultObject;
 	  },
 	
 	  getUrl: function(flightQuote){
@@ -259,11 +250,14 @@
 	  },
 	
 	  populateQuotes: function(hotelData){
+	    resultsArray = []
 	    hotelData.hotelList.forEach(function(hotel){
 	      if(hotel.isHotelAvailable){
-	        this.quotes.push(new HotelQuote(hotel))
+	        // this.quotes.push(new HotelQuote(hotel))
+	        resultsArray.push(new HotelQuote(hotel));
 	      }
 	    }.bind(this))
+	    return resultsArray;
 	  }
 	
 	}
@@ -1271,18 +1265,44 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var InitialSearchParams = __webpack_require__(18);
+	var ResultObject = __webpack_require__(4);
+	var AllResultsObject = __webpack_require__(19);
 	
-	var InitialSearchView = function(){
-	  
-	}
+	var InitialSearchView = function(){}
 	
 	InitialSearchView.prototype = {
-	  handleSearchClick: function(){
+	  handleSearchClick: function(flightSearch, hotelSearch, keys){
 	    var button = document.getElementById('initialSearchButton');
 	    button.onclick = function(){
-	      this.getUserLatLng();
 	      console.log('clicked')
+	      //get users geolocation...
+	      //can we get lat
+	      this.getUserLatLng().then(function(response){
+	        //then get that info into a usable object
+	        locationData = this.newSearchParams(response, this.getStartDate(), this.getEndDate())
+	        //request get flight data, once that is complete conintue....
+	        flightSearch.getFlightData(keys, locationData).then(function(response) {
+	          //return the quotes array to the next promise handler
+	          console.log('test',response)
+	          return response.quotes
+	        }).then(function(response){
+	          //loop through each quote and call a function to create a results object
+	          //then put that in array.
+	          //solution to the beast....
+	          return Promise.all(response.map(function (quote) {
+	              return hotelSearch.getHotelData(keys, quote)
+	            }));
+	        }).then(function (arrayOfResults) {
+	          //do stuff here with the array of result objects
+	          //save somewhere?
+	          var allResults = new AllResultsObject();
+	          allResults.results = arrayOfResults
+	          console.log('all results:',allResults)
+	          //save locally.
+	        });;
+	      }.bind(this))
 	    }.bind(this);
+	
 	  },
 	
 	  constructString: function(lat, lng){
@@ -1302,15 +1322,16 @@
 	    }.bind(this))//end of promise
 	  },
 	
-	
 	  getStartDate: function(){
 	    var startDate = document.getElementById('searchStartDateInput').value;
 	    return startDate
 	  },
+	
 	  getEndDate: function(){
 	    var endDate = document.getElementById('searchEndDateInput').value;
 	    return endDate
 	  }, 
+	  
 	  newSearchParams: function(latLng){
 	    var initialSearchParams = new InitialSearchParams(latLng, this.getStartDate(), this.getEndDate());
 	    return initialSearchParams;
@@ -1339,6 +1360,22 @@
 	module.exports = InitialSearchParams;
 	
 
+
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	var AllResults = function(){
+	  this.results = []
+	}
+	
+	var testingVarible = null;
+	
+	AllResults.prototype = {
+	
+	}
+	
+	module.exports = AllResults;
 
 /***/ }
 /******/ ]);

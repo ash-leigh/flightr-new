@@ -12,7 +12,6 @@ HotelSearch.prototype = {
     return new Promise(function(resolve, reject) {
       var url = this.getUrl(flightQuote)
       url = url + keys.expediaApiKey;
-
       var request = new XMLHttpRequest();
       request.open('GET', url);
       request.onload = function(){
@@ -21,12 +20,24 @@ HotelSearch.prototype = {
           var result = new AllResultsObject();
           var jsonString = request.responseText;
           var hotelData = JSON.parse(jsonString);
-          this.populateQuotes(hotelData);
-          resolve(this)
+          console.log('Creating Hotel Objects and then result Objects')
+          resultObject = this.createResultObject(hotelData, flightQuote)
+          //pass data to views functions to display indiv results as they load here
+          //nats view function here
+          //resolve must be called last
+          resolve(resultObject)
         }
       }.bind(this)
       request.send(null);
     }.bind(this))//end of promise
+  },
+
+  createResultObject: function(hotelData, flightQuote){
+    var resultObject = new ResultObject();
+    resultObject.hotels = this.populateQuotes(hotelData);
+    resultObject.flightInfo = flightQuote;
+    resultObject.flightPrice = flightQuote.price;
+    return resultObject;
   },
 
   getUrl: function(flightQuote){
@@ -38,11 +49,14 @@ HotelSearch.prototype = {
   },
 
   populateQuotes: function(hotelData){
+    resultsArray = []
     hotelData.hotelList.forEach(function(hotel){
       if(hotel.isHotelAvailable){
-        this.quotes.push(new HotelQuote(hotel))
+        // this.quotes.push(new HotelQuote(hotel))
+        resultsArray.push(new HotelQuote(hotel));
       }
     }.bind(this))
+    return resultsArray;
   }
 
 }
