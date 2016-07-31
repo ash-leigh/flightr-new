@@ -49,6 +49,8 @@
 	var ResultObject = __webpack_require__(4);
 	var AllResultsObject = __webpack_require__(4);
 	var InitialSearchView = __webpack_require__(17);
+	var InitialUserPositionView = __webpack_require__(20);
+	var InitialUserPosition = __webpack_require__(21);
 	
 	
 	var keys = {
@@ -64,6 +66,9 @@
 	  //event listeners here
 	  var initialSearchView = new InitialSearchView();
 	  initialSearchView.handleSearchClick(flightSearch, hotelSearch, keys);
+	  
+	  var initialUserPosition = new InitialUserPosition();
+	   initialUserPosition.getUserLatLng();
 	  //area for Joe to play with
 	
 	
@@ -1376,6 +1381,63 @@
 	}
 	
 	module.exports = AllResults;
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InitialUserPosition = __webpack_require__(21); 
+	
+	var InitialUserPositionView = function(){
+	
+	}
+	
+	InitialUserPositionView.prototype = {
+	  displayLocation: function(location){
+	      var displayDiv = document.getElementById("suggestedOrigin");
+	      displayDiv.innerHTML = "You are in " + location;
+	  }
+	}
+	
+	module.exports = InitialUserPositionView;
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var InitialUserPosition = function(){
+	
+	}
+	
+	InitialUserPosition.prototype = {
+	  getUserLatLng: function(){
+	      navigator.geolocation.getCurrentPosition(function(position){
+	        var lat = position.coords.latitude;
+	        var lng = position.coords.longitude;
+	        this.getUserLocationName(Number(lat), Number(lng))
+	      }.bind(this))
+	  },
+	  getUserLocationName: function(lat, lng){
+	    var geocoder = new google.maps.Geocoder();
+	    var latLng = new google.maps.LatLng(lat, lng);
+	    geocoder.geocode({'latLng': latLng}, function(results, status){
+	      var addressComponents = results[0].address_components
+	      addressComponents.forEach(function(component){
+	        component.types.forEach(function(type){
+	          if(type === 'locality'){
+	            console.log(component.long_name)
+	            // return component.long_name;
+	            var InitialUserPositionView = __webpack_require__(20); 
+	            var positionView = new InitialUserPositionView();
+	            positionView.displayLocation(component.long_name)
+	          }
+	        })
+	      })
+	    })
+	  }
+	}
+	
+	module.exports = InitialUserPosition;
 
 /***/ }
 /******/ ]);

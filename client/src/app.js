@@ -3,6 +3,8 @@ var HotelSearch = require('./models/hotelsearch.js');
 var ResultObject = require('./models/result.js');
 var AllResultsObject = require('./models/result.js');
 var InitialSearchView = require('./views/initialsearchview.js');
+var InitialUserPositionView = require('./views/initialuserpositionview.js');
+var InitialUserPosition = require('./models/initialuserposition.js');
 
 
 var keys = {
@@ -18,6 +20,9 @@ window.onload = function(){
   //event listeners here
   var initialSearchView = new InitialSearchView();
   initialSearchView.handleSearchClick(flightSearch, hotelSearch, keys);
+  
+  var initialUserPosition = new InitialUserPosition();
+   initialUserPosition.getUserLatLng();
   //area for Joe to play with
 
 
