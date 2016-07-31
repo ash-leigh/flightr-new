@@ -8,13 +8,38 @@
  <script type="text/javascript" src="bundle.js"></script>
 </head>
 <body>
- <h1 id="title">TEST</h1>
- <div id="suggestedOrigin"></div>
- START:
- <input type="date" id="searchStartDateInput">
- END:
- <input type="date" id="searchEndDateInput">
- <input type='button' value="GO" id="initialSearchButton">
- <select id="userOriginSelect">Search airport</select>
+
+  <div class='row'>
+    <div class='col-12'>
+      <!-- logo goes here -->
+      <img src='#'>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class='col-2'></div>
+    <div class='col-8'>
+
+      <div class='row'>
+      <!-- search row -->
+        <input type="date" id="searchStartDateInput">
+        <input type="date" id="searchEndDateInput">
+        <input type='button' value="GO" id="initialSearchButton">
+      </div>
+
+      <div class='row'>
+        <div id="suggestedOrigin"></div>
+        <select id="userOriginSelect">Search airport</select>
+        <!-- ashleighs drop down here -->
+        <!-- filter options here -->
+      </div>
+
+      <div class='row'>
+        <!-- results populated here -->
+      </div>
+    </div>
+    <div class='col-2'></div>
+  </div>
+
 </body>
 </html>
