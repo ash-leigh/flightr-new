@@ -10,7 +10,6 @@ InitialSearchView.prototype = {
     button.onclick = function(){
       console.log('clicked')
       //get users geolocation...
-      //can we get lat
       this.getUserLatLng().then(function(response){
         //then get that info into a usable object
         locationData = this.newSearchParams(response, this.getStartDate(), this.getEndDate())
@@ -21,22 +20,29 @@ InitialSearchView.prototype = {
           return response.quotes
         }).then(function(response){
           //loop through each quote and call a function to create a results object
-          //then put that in array.
-          //solution to the beast....
           return Promise.all(response.map(function (quote) {
               return hotelSearch.getHotelData(keys, quote)
             }));
         }).then(function (arrayOfResults) {
-          //do stuff here with the array of result objects
-          //save somewhere?
           var allResults = new AllResultsObject();
           allResults.results = arrayOfResults
           console.log('all results:',allResults)
           //save locally.
-        });;
+          localStorage.setItem('lastSearch', JSON.stringify(allResults));
+          var retrievedObject = JSON.parse(localStorage.getItem('allSearches')) || [];
+          retrievedObject.push(allResults);
+          localStorage.setItem('allSearches', JSON.stringify(retrievedObject));
+        });
       }.bind(this))
     }.bind(this);
+  },
 
+  saveResultsLocal: function(allResults){
+    // Put the object into storage
+    localStorage.setItem('lastSearch', JSON.stringify(allResults));
+    var retrievedObject = JSON.parse(localStorage.getItem('allSearches')) || [];
+    retrievedObject.push(allResults);
+    localStorage.setItem('allSearches', JSON.stringify(retrievedObject));
   },
 
   constructString: function(lat, lng){

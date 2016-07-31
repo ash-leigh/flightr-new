@@ -34,7 +34,7 @@ HotelSearch.prototype = {
 
   createResultObject: function(hotelData, flightQuote){
     var resultObject = new ResultObject();
-    resultObject.hotels = this.populateQuotes(hotelData);
+    resultObject.hotels = this.populateQuotes(hotelData, flightQuote);
     resultObject.flightInfo = flightQuote;
     resultObject.flightPrice = flightQuote.price;
     return resultObject;
@@ -48,12 +48,12 @@ HotelSearch.prototype = {
     return url;
   },
 
-  populateQuotes: function(hotelData){
+  populateQuotes: function(hotelData, flightQuote){
     resultsArray = []
     hotelData.hotelList.forEach(function(hotel){
       if(hotel.isHotelAvailable){
         // this.quotes.push(new HotelQuote(hotel))
-        resultsArray.push(new HotelQuote(hotel));
+        resultsArray.push(new HotelQuote(hotel, flightQuote));
       }
     }.bind(this))
     return resultsArray;

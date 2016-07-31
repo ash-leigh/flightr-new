@@ -1,7 +1,7 @@
 var FlightSearch = require('./models/flightsearch.js');
 var HotelSearch = require('./models/hotelsearch.js');
 var ResultObject = require('./models/result.js');
-var AllResultsObject = require('./models/result.js');
+var AllResultsObject = require('./models/allresults.js');
 var InitialSearchView = require('./views/initialsearchview.js');
 var InitialUserPositionView = require('./views/initialuserpositionview.js');
 var InitialUserPosition = require('./models/initialuserposition.js');
@@ -24,7 +24,8 @@ window.onload = function(){
   var initialUserPosition = new InitialUserPosition();
    initialUserPosition.getUserLatLng();
   //area for Joe to play with
-
+  allResults.populateFromLocal();
+  console.log('populated:', allResults)
 
   //area for ash to play with
 
