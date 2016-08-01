@@ -46,12 +46,12 @@
 
 	var FlightSearch = __webpack_require__(1);
 	var HotelSearch = __webpack_require__(2);
-	var ResultObject = __webpack_require__(5);
+	var ResultObject = __webpack_require__(4);
 	var AllResultsObject = __webpack_require__(21);
 	var InitialSearchView = __webpack_require__(22);
 	var InitialUserPositionView = __webpack_require__(24);
 	var InitialUserPosition = __webpack_require__(25);
-	var ResultBoxes = __webpack_require__(9);
+	var ResultBoxes = __webpack_require__(8);
 	
 	var keys = {
 	 skyscannerApiKey: 'co301553792687403420764331127549',
@@ -221,13 +221,13 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var HotelQuote = __webpack_require__(4);
-	var ResultObject = __webpack_require__(5);
-	var AllResultsObject = __webpack_require__(6);
-	var ResultBoxes = __webpack_require__(9);
-	var Promise = __webpack_require__(10);
+	var HotelQuote = __webpack_require__(3);
+	var ResultObject = __webpack_require__(4);
+	var AllResultsObject = __webpack_require__(5);
+	var ResultBoxes = __webpack_require__(8);
+	var Promise = __webpack_require__(9);
 	
-	var QuoteImage = __webpack_require__(3);
+	var QuoteImage = __webpack_require__(19);
 	
 	var HotelSearch = function(data){
 	 this.quotes = []
@@ -305,59 +305,6 @@
 /* 3 */
 /***/ function(module, exports) {
 
-	var QuoteImage = function(){
-	
-	}
-	
-	QuoteImage.prototype = {
-	  getDestinationLatLng: function(result){
-	    return new Promise(function(resolve, reject) {
-	      var geocoder = new google.maps.Geocoder();
-	      geocoder.geocode({'address': result.destinationCity}, function(results, status){
-	        if (status === google.maps.GeocoderStatus.OK){
-	          var destinationCityLatLng = {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()}
-	            resolve(destinationCityLatLng)
-	          //look here
-	          // this.getImageFromFlickr(destinationCityLatLng)
-	          ////
-	        }else{
-	          resolve({lat: 55.946986700000004, lng: -3.2014716})
-	        }
-	      }.bind(this))
-	    }.bind(this))//end of promise
-	  },
-	  getImageFromFlickr: function(latLngObject){
-	    return new Promise(function(resolve, reject) {
-	        var url = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=d836aea8ef2a786aad020fb216b0b1c4&lat='+ latLngObject.lat +'&lon='+ latLngObject.lng +'&format=json&nojsoncallback=1' 
-	        var request = new XMLHttpRequest();
-	        request.open("GET", url);
-	        request.onload = function () {
-	            if (request.status === 200) {
-	                var jsonString = request.responseText;
-	                var photosObject = JSON.parse(jsonString);
-	                photo = photosObject.photos.photo[0]
-	                resolve(this.constructImgLink(photo));
-	            }
-	        }.bind(this)
-	        request.send();
-	      }.bind(this))//end of promise
-	    }, 
-	    constructImgLink: function(photoObject){
-	      return 'https://farm' + photoObject.farm + '.staticflickr.com/' + photoObject.server + '/' + photoObject.id + '_' + photoObject.secret + '.jpg>'
-	    }
-	}
-	
-	module.exports = QuoteImage;
-	
-	
-	
-	
-
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
 	var HotelQuote = function(quoteObject, flightQuote){
 	  this.hotelName = quoteObject.name,
 	  this.hotelAddress = quoteObject.address + ", " + quoteObject.city + ", " + quoteObject.stateProvinceCode + ", " + quoteObject.postalCode
@@ -382,7 +329,7 @@
 
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var HotelSearch = __webpack_require__(2);
@@ -409,10 +356,10 @@
 	module.exports = Result;
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(7)
+	var _ = __webpack_require__(6)
 	
 	var AllResults = function(){
 	  this.results = []
@@ -477,7 +424,7 @@
 	module.exports = AllResults;
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -17088,10 +17035,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(8)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(7)(module)))
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -17107,7 +17054,7 @@
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports) {
 
 	var ResultBoxes = function(){}
@@ -17322,12 +17269,26 @@
 	module.exports = ResultBoxes;
 
 /***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = __webpack_require__(10)
+
+
+/***/ },
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(11)
+	module.exports = __webpack_require__(11);
+	__webpack_require__(13);
+	__webpack_require__(14);
+	__webpack_require__(15);
+	__webpack_require__(16);
+	__webpack_require__(18);
 
 
 /***/ },
@@ -17336,21 +17297,7 @@
 
 	'use strict';
 	
-	module.exports = __webpack_require__(12);
-	__webpack_require__(14);
-	__webpack_require__(15);
-	__webpack_require__(16);
-	__webpack_require__(17);
-	__webpack_require__(19);
-
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var asap = __webpack_require__(13);
+	var asap = __webpack_require__(12);
 	
 	function noop() {}
 	
@@ -17564,7 +17511,7 @@
 
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
@@ -17791,12 +17738,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Promise = __webpack_require__(12);
+	var Promise = __webpack_require__(11);
 	
 	module.exports = Promise;
 	Promise.prototype.done = function (onFulfilled, onRejected) {
@@ -17810,12 +17757,12 @@
 
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Promise = __webpack_require__(12);
+	var Promise = __webpack_require__(11);
 	
 	module.exports = Promise;
 	Promise.prototype['finally'] = function (f) {
@@ -17832,14 +17779,14 @@
 
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	//This file contains the ES6 extensions to the core Promises/A+ API
 	
-	var Promise = __webpack_require__(12);
+	var Promise = __webpack_require__(11);
 	
 	module.exports = Promise;
 	
@@ -17945,7 +17892,7 @@
 
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17953,8 +17900,8 @@
 	// This file contains then/promise specific extensions that are only useful
 	// for node.js interop
 	
-	var Promise = __webpack_require__(12);
-	var asap = __webpack_require__(18);
+	var Promise = __webpack_require__(11);
+	var asap = __webpack_require__(17);
 	
 	module.exports = Promise;
 	
@@ -18081,13 +18028,13 @@
 
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	// rawAsap provides everything we need except exception management.
-	var rawAsap = __webpack_require__(13);
+	var rawAsap = __webpack_require__(12);
 	// RawTasks are recycled to reduce GC churn.
 	var freeTasks = [];
 	// We queue errors to ensure they are thrown in right order (FIFO).
@@ -18153,12 +18100,12 @@
 
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Promise = __webpack_require__(12);
+	var Promise = __webpack_require__(11);
 	
 	module.exports = Promise;
 	Promise.enableSynchronous = function () {
@@ -18221,6 +18168,59 @@
 
 
 /***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	var QuoteImage = function(){
+	
+	}
+	
+	QuoteImage.prototype = {
+	  getDestinationLatLng: function(result){
+	    return new Promise(function(resolve, reject) {
+	      var geocoder = new google.maps.Geocoder();
+	      geocoder.geocode({'address': result.destinationCity}, function(results, status){
+	        if (status === google.maps.GeocoderStatus.OK){
+	          var destinationCityLatLng = {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()}
+	            resolve(destinationCityLatLng)
+	          //look here
+	          // this.getImageFromFlickr(destinationCityLatLng)
+	          ////
+	        }else{
+	          resolve({lat: 55.946986700000004, lng: -3.2014716})
+	        }
+	      }.bind(this))
+	    }.bind(this))//end of promise
+	  },
+	  getImageFromFlickr: function(latLngObject){
+	    return new Promise(function(resolve, reject) {
+	        var url = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=d836aea8ef2a786aad020fb216b0b1c4&lat='+ latLngObject.lat +'&lon='+ latLngObject.lng +'&format=json&nojsoncallback=1' 
+	        var request = new XMLHttpRequest();
+	        request.open("GET", url);
+	        request.onload = function () {
+	            if (request.status === 200) {
+	                var jsonString = request.responseText;
+	                var photosObject = JSON.parse(jsonString);
+	                photo = photosObject.photos.photo[0]
+	                resolve(this.constructImgLink(photo));
+	            }
+	        }.bind(this)
+	        request.send();
+	      }.bind(this))//end of promise
+	    }, 
+	    constructImgLink: function(photoObject){
+	      return 'https://farm' + photoObject.farm + '.staticflickr.com/' + photoObject.server + '/' + photoObject.id + '_' + photoObject.secret + '.jpg>'
+	    }
+	}
+	
+	module.exports = QuoteImage;
+	
+	
+	
+	
+
+
+/***/ },
 /* 20 */
 /***/ function(module, exports) {
 
@@ -18251,7 +18251,7 @@
 /* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(7)
+	var _ = __webpack_require__(6)
 	
 	var AllResults = function(){
 	  this.results = []
@@ -18320,7 +18320,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var InitialSearchParams = __webpack_require__(23);
-	var ResultObject = __webpack_require__(5);
+	var ResultObject = __webpack_require__(4);
 	var AllResultsObject = __webpack_require__(21);
 	
 	var InitialSearchView = function(){}
