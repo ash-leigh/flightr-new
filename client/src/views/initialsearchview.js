@@ -7,17 +7,17 @@ var InitialSearchView = function(){}
 InitialSearchView.prototype = {
   handleSearchClick: function(flightSearch, hotelSearch, keys){
     var button = document.getElementById('initialSearchButton');
-
     getPositionData = function(){
         var startDate = document.getElementById('searchStartDateInput').value
         var endDate = document.getElementById('searchEndDateInput').value
-        var origin = JSON.parse(localStorage.getItem('locationData')) || {origin: "55.9660935,-3.1767301999999997-latlong"}
+        var origin = JSON.parse(localStorage.getItem('locationData'));
         var locationData = {origin: origin.origin, startDate: startDate, endDate: endDate}
         return locationData;
     }
 
     button.onclick = function(){
       console.log('clicked')
+
         var locationData = getPositionData();
         flightSearch.getFlightData(keys, locationData).then(function(response) {
           return response.quotes

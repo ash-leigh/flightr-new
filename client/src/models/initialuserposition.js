@@ -1,3 +1,6 @@
+var DynamicSearch = require('./dynamicsearch.js');
+var DynamicSearchView = require('../views/dynamicsearchview.js')
+
 var InitialUserPosition = function(){}
 
 InitialUserPosition.prototype = {
@@ -23,6 +26,10 @@ InitialUserPosition.prototype = {
             positionView.displayLocation(component.long_name);
             var locationData = {origin: lat + "," + lng + "-latlong" }
             localStorage.setItem('locationData', JSON.stringify(locationData));
+            var dynamicSearch = new DynamicSearch();
+            dynamicSearch.getUserInput();
+            var dynamicSearchView = new DynamicSearchView();
+            dynamicSearchView.showDynamicSearch();
           }
         })
       })
