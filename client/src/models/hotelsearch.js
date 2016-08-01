@@ -1,6 +1,7 @@
 var HotelQuote = require('./hotelquote.js');
 var ResultObject = require('./result.js');
 var AllResultsObject = require('./Allresults.js');
+var ResultBoxes = require('../views/allresultsview.js');
 var Promise = require('promise');
 
 var HotelSearch = function(data){
@@ -22,8 +23,8 @@ HotelSearch.prototype = {
           var hotelData = JSON.parse(jsonString);
           console.log('Creating Hotel Objects and then result Objects')
           resultObject = this.createResultObject(hotelData, flightQuote)
-          //pass data to views functions to display indiv results as they load here
-          //nats view function here
+          var resultBox = new ResultBoxes();
+          //load indv result boxes
           //resolve must be called last
           resolve(resultObject)
         }
@@ -34,7 +35,7 @@ HotelSearch.prototype = {
 
   createResultObject: function(hotelData, flightQuote){
     var resultObject = new ResultObject();
-    resultObject.hotels = this.populateQuotes(hotelData);
+    resultObject.hotels = this.populateQuotes(hotelData, flightQuote);
     resultObject.flightInfo = flightQuote;
     resultObject.flightPrice = flightQuote.price;
     return resultObject;
@@ -48,12 +49,12 @@ HotelSearch.prototype = {
     return url;
   },
 
-  populateQuotes: function(hotelData){
+  populateQuotes: function(hotelData, flightQuote){
     resultsArray = []
     hotelData.hotelList.forEach(function(hotel){
       if(hotel.isHotelAvailable){
         // this.quotes.push(new HotelQuote(hotel))
-        resultsArray.push(new HotelQuote(hotel));
+        resultsArray.push(new HotelQuote(hotel, flightQuote));
       }
     }.bind(this))
     return resultsArray;

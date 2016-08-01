@@ -1,4 +1,4 @@
-var HotelQuote = function(quoteObject){
+var HotelQuote = function(quoteObject, flightQuote){
   this.hotelName = quoteObject.name,
   this.hotelAddress = quoteObject.address + ", " + quoteObject.city + ", " + quoteObject.stateProvinceCode + ", " + quoteObject.postalCode
   this.latLng = {lat: quoteObject.latitude, lng: quoteObject.longitude},
@@ -9,7 +9,8 @@ var HotelQuote = function(quoteObject){
   this.guestRating = quoteObject.hotelGuestRating,
   this.percentRecommended = quoteObject.percentRecommended,
   this.nightlyPrice = quoteObject.lowRateInfo.total,
-  this.country = quoteObject.countryCode
+  this.country = quoteObject.countryCode,
+  this.flightQuote = flightQuote
 }
 
 HotelQuote.prototype = {

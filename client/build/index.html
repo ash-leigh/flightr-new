@@ -1,20 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
- <title>Flightr</title>
- <link rel="stylesheet" type="text/css" href="main.css">
- <script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
- <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
- <script type="text/javascript" src="bundle.js"></script>
+<title>Flightr</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="bundle.js"></script>
 </head>
 <body>
- <h1 id="title">TEST</h1>
- <div id="suggestedOrigin"></div>
- START:
- <input type="date" id="searchStartDateInput">
- END:
- <input type="date" id="searchEndDateInput">
- <input type='button' value="GO" id="initialSearchButton">
- <select id="userOriginSelect">Search airport</select>
+
+ <div class='row'>
+   <div class='col-12'>
+     <!-- logo goes here -->
+     <img src='./images/flightr_logo_blue.png'>
+   </div>
+ </div>
+
+ <div class='row'>
+   <div class='col-2'></div>
+   <div class='col-8'>
+
+  
+
+     <div class='row'>
+
+       <div id="suggestedOrigin"></div>
+       <div id='dynamicSearchClick'>Change airport</div>
+       <div id="toggledDynamicSearchContent">
+
+         <input type="text" id="userOriginSelect"list="datalist" placeholder="destination">
+         <datalist id="datalist"></datalist>
+
+       </div>
+       <!-- ashleighs drop down here -->
+       <!-- filter options here -->
+     </div>
+
+     <div class='row'>
+       <!-- search row -->
+       <input type="date" id="searchStartDateInput">
+       <input type="date" id="searchEndDateInput">
+       <input type='button' value="GO" id="initialSearchButton">
+     </div>
+
+     <div class='row'>
+       <!-- results populated here -->
+     </div>
+   </div>
+   <div class='col-2'></div>
+ </div>
+
 </body>
 </html>
