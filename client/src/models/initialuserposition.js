@@ -1,6 +1,7 @@
-var InitialUserPosition = function(){
+var DynamicSearch = require('./dynamicsearch.js');
+var DynamicSearchView = require('../views/dynamicsearchview.js')
 
-}
+var InitialUserPosition = function(){}
 
 InitialUserPosition.prototype = {
   getUserLatLng: function(){
@@ -22,7 +23,13 @@ InitialUserPosition.prototype = {
             // return component.long_name;
             var InitialUserPositionView = require('../views/initialuserpositionview.js'); 
             var positionView = new InitialUserPositionView();
-            positionView.displayLocation(component.long_name)
+            positionView.displayLocation(component.long_name);
+            var locationData = {origin: lat + "," + lng + "-latlong" }
+            localStorage.setItem('locationData', JSON.stringify(locationData));
+            var dynamicSearch = new DynamicSearch();
+            dynamicSearch.getUserInput();
+            var dynamicSearchView = new DynamicSearchView();
+            dynamicSearchView.showDynamicSearch();
           }
         })
       })

@@ -51,6 +51,7 @@
 	var InitialSearchView = __webpack_require__(21);
 	var InitialUserPositionView = __webpack_require__(23);
 	var InitialUserPosition = __webpack_require__(24);
+	var ResultBoxes = __webpack_require__(8);
 	
 	
 	var keys = {
@@ -59,6 +60,7 @@
 	}
 	
 	window.onload = function(){
+	  setDates();
 	  //object loads here
 	  var allResults = new AllResultsObject();
 	  var flightSearch = new FlightSearch()
@@ -70,8 +72,7 @@
 	  var initialUserPosition = new InitialUserPosition();
 	   initialUserPosition.getUserLatLng();
 	  //area for Joe to play with
-	  allResults.populateFromLocal();
-	  console.log('populated:', allResults)
+	  console.log(allResults)
 	
 	  //area for ash to play with
 	
@@ -80,6 +81,29 @@
 	
 	
 	  //
+	}
+	
+	
+	var setDates = function(){
+	  var today = new Date();
+	  var startDate = document.getElementById('searchStartDateInput')
+	  startDate.value = formateDates(today)
+	  var endDate = document.getElementById('searchEndDateInput')
+	  today.setDate(today.getDate() + 2); 
+	  endDate.value = formateDates(today)
+	}
+	
+	var formateDates = function(date){
+	  var dd = date.getDate();
+	  var mm = date.getMonth() + 1;
+	  var yyyy = date.getFullYear()
+	  if(mm < 10){
+	    mm = '0'+mm;
+	  }
+	  if(dd < 10){
+	    dd = '0'+dd;  
+	  }
+	  return yyyy+'-'+mm+'-'+dd;
 	}
 	
 	
@@ -208,6 +232,7 @@
 	var HotelQuote = __webpack_require__(3);
 	var ResultObject = __webpack_require__(4);
 	var AllResultsObject = __webpack_require__(5);
+	var ResultBoxes = __webpack_require__(8);
 	var Promise = __webpack_require__(9);
 	
 	var HotelSearch = function(data){
@@ -229,8 +254,8 @@
 	          var hotelData = JSON.parse(jsonString);
 	          console.log('Creating Hotel Objects and then result Objects')
 	          resultObject = this.createResultObject(hotelData, flightQuote)
-	          //pass data to views functions to display indiv results as they load here
-	          //nats view function here
+	          var resultBox = new ResultBoxes();
+	          //load indv result boxes
 	          //resolve must be called last
 	          resolve(resultObject)
 	        }
@@ -346,11 +371,49 @@
 	      return;
 	    }
 	    this.results = retrievedResults.results;
+	    this.createCheapestPackage()
+	  },
+	
+	  createCheapestPackage: function(){
+	    this.orderHotelsbyPrice
+	    this.results.forEach(function(result){
+	      if(result.hotels.length > 0){
+	        result.cheapestPackage = Math.floor(result.flightPrice) + Math.floor(result.hotels[0].nightlyPrice);
+	      }
+	    })
+	  },
+	
+	  orberByCheapestPackage: function(){
+	    this.results = _.sortBy(this.results, 'cheapestPackage')
 	  },
 	
 	  orderByFlightPrice: function(){
-	    
-	  }
+	    this.results = _.sortBy(this.results, 'flightPrice')
+	  },
+	
+	  orderHotelsbyPrice: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.hotels, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderHotelsbyStarRating: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.starRating, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderHotelsbyPercentRating: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.percentRecommended, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderHotelsbyGuestRating: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.guestRating, 'nightlyPrice')
+	    })
+	  },
 	}
 	
 	module.exports = AllResults;
@@ -16986,7 +17049,20 @@
 
 
 /***/ },
-/* 8 */,
+/* 8 */
+/***/ function(module, exports) {
+
+	
+	var ResultBoxes = function(){}
+	
+	
+	ResultBoxes.prototype = {
+	
+	}
+	
+	module.exports = ResultBoxes;
+
+/***/ },
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -17933,11 +18009,49 @@
 	      return;
 	    }
 	    this.results = retrievedResults.results;
+	    this.createCheapestPackage()
+	  },
+	
+	  createCheapestPackage: function(){
+	    this.orderHotelsbyPrice
+	    this.results.forEach(function(result){
+	      if(result.hotels.length > 0){
+	        result.cheapestPackage = Math.floor(result.flightPrice) + Math.floor(result.hotels[0].nightlyPrice);
+	      }
+	    })
+	  },
+	
+	  orberByCheapestPackage: function(){
+	    this.results = _.sortBy(this.results, 'cheapestPackage')
 	  },
 	
 	  orderByFlightPrice: function(){
-	    
-	  }
+	    this.results = _.sortBy(this.results, 'flightPrice')
+	  },
+	
+	  orderHotelsbyPrice: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.hotels, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderHotelsbyStarRating: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.starRating, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderHotelsbyPercentRating: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.percentRecommended, 'nightlyPrice')
+	    })
+	  },
+	
+	  orderHotelsbyGuestRating: function(){
+	    this.results.forEach(function(result){
+	      result.hotels = _.sortBy(result.guestRating, 'nightlyPrice')
+	    })
+	  },
 	}
 	
 	module.exports = AllResults;
@@ -17955,16 +18069,19 @@
 	InitialSearchView.prototype = {
 	  handleSearchClick: function(flightSearch, hotelSearch, keys){
 	    var button = document.getElementById('initialSearchButton');
+	    getPositionData = function(){
+	        var startDate = document.getElementById('searchStartDateInput').value
+	        var endDate = document.getElementById('searchEndDateInput').value
+	        var origin = JSON.parse(localStorage.getItem('locationData'));
+	        var locationData = {origin: origin.origin, startDate: startDate, endDate: endDate}
+	        return locationData;
+	    }
+	
 	    button.onclick = function(){
 	      console.log('clicked')
-	      //get users geolocation...
-	      this.getUserLatLng().then(function(response){
-	        //then get that info into a usable object
-	        locationData = this.newSearchParams(response, this.getStartDate(), this.getEndDate())
-	        //request get flight data, once that is complete conintue....
+	
+	        var locationData = getPositionData();
 	        flightSearch.getFlightData(keys, locationData).then(function(response) {
-	          //return the quotes array to the next promise handler
-	          console.log('test',response)
 	          return response.quotes
 	        }).then(function(response){
 	          //loop through each quote and call a function to create a results object
@@ -17981,7 +18098,6 @@
 	          retrievedObject.push(allResults);
 	          localStorage.setItem('allSearches', JSON.stringify(retrievedObject));
 	        });
-	      }.bind(this))
 	    }.bind(this);
 	  },
 	
@@ -18072,9 +18188,10 @@
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var InitialUserPosition = function(){
+	var DynamicSearch = __webpack_require__(25);
+	var DynamicSearchView = __webpack_require__(26)
 	
-	}
+	var InitialUserPosition = function(){}
 	
 	InitialUserPosition.prototype = {
 	  getUserLatLng: function(){
@@ -18096,7 +18213,13 @@
 	            // return component.long_name;
 	            var InitialUserPositionView = __webpack_require__(23); 
 	            var positionView = new InitialUserPositionView();
-	            positionView.displayLocation(component.long_name)
+	            positionView.displayLocation(component.long_name);
+	            var locationData = {origin: lat + "," + lng + "-latlong" }
+	            localStorage.setItem('locationData', JSON.stringify(locationData));
+	            var dynamicSearch = new DynamicSearch();
+	            dynamicSearch.getUserInput();
+	            var dynamicSearchView = new DynamicSearchView();
+	            dynamicSearchView.showDynamicSearch();
 	          }
 	        })
 	      })
@@ -18105,6 +18228,87 @@
 	}
 	
 	module.exports = InitialUserPosition;
+
+/***/ },
+/* 25 */
+/***/ function(module, exports) {
+
+	var DynamicSearch = function(){
+	
+	}
+	
+	DynamicSearch.prototype = {
+	  getUserInput: function(){
+	    var userInput = document.getElementById('userOriginSelect');
+	    userInput.onchange = this.save;
+	    userInput.onkeyup = this.search;
+	  },
+	  save: function(){
+	    localStorage.setItem('locationData', JSON.stringify({origin: this.value.split('/')[1]}));
+	    console.log(this.value.split('/')[1])
+	  },
+	  search: function(){
+	    var populateOptions = function(data){
+	
+	      var datalist = document.getElementById('datalist');
+	      datalist.innerHTML = "";
+	      data.Places.forEach(function(place){
+	
+	        var option = document.createElement('option');
+	        option.text = place.PlaceId;
+	        option.value = place.PlaceName + "/" + place.PlaceId;;
+	        datalist.appendChild(option);
+	      })
+	    }
+	    var getPlaceData = function(query){
+	      var url = 'http://partners.api.skyscanner.net/apiservices/autosuggest/v1.0/GB/GBP/en-GB?query=' + query + '&apiKey=co301553792687403420764331127549'
+	      var request = new XMLHttpRequest();
+	      request.open('GET', url);
+	      request.onload = function(){
+	        if(request.status === 200){
+	          var jsonString = request.responseText;
+	          var placeData = JSON.parse(jsonString);
+	          populateOptions(placeData);
+	        }
+	      }
+	      request.send(null);
+	    }
+	    var searchTerm = document.getElementById('userOriginSelect').value;
+	    if(searchTerm.length > 0){
+	      getPlaceData(searchTerm);
+	    }
+	  }
+	}
+	
+	module.exports = DynamicSearch;
+	
+	
+	
+	
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports) {
+
+	var DynamicSearchView = function(){
+	
+	}
+	
+	DynamicSearchView.prototype = {
+	  showDynamicSearch: function(){
+	    var toggledDynamicSearchContent = document.getElementById('toggledDynamicSearchContent');
+	    var dynamicSearchClick = document.getElementById('dynamicSearchClick');
+	    dynamicSearchClick.id = 'dynamicSearchClickInit'
+	    dynamicSearchClick.addEventListener('click',function(){
+	      toggledDynamicSearchContent.style.height == '0px' || toggledDynamicSearchContent.style.height == ''
+	      ? toggledDynamicSearchContent.style.height = '50px' 
+	      : toggledDynamicSearchContent.style.height = '0px';
+	    }, false );
+	  }
+	}
+	
+	module.exports = DynamicSearchView;
 
 /***/ }
 /******/ ]);
