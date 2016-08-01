@@ -18,8 +18,15 @@
 [class*="col-"] {
    float: left;
    padding: 0.01em;
+   border: 1px solid white;
 /* Using borders is great for testing successful grid setup */
 /*    border: 1px solid red;*/
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: block;
 }
 /* END OF GRID SETUP */
 body {
@@ -48,6 +55,11 @@ html {
 #dynamicSearchClick{
  display:none; 
 }
+
+.hidden {
+  display:none; 
+}
+
 #dynamicSearchClickInit{
  height:20px;
 }
@@ -64,4 +76,9 @@ html {
 }
 #userOriginSelect{
  margin: 15px;
+}
+
+.hotelThumbnail {
+  height: 3em;
+  width: auto;
 }

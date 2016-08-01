@@ -5,6 +5,7 @@ var Result = function(flightObject){
   this.flightPrice = 0;
   this.hotels = []
   this.country = null;
+  this.imageUrl = null;
 }
 
 Result.prototype = {

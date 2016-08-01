@@ -46,81 +46,73 @@
 
 	var FlightSearch = __webpack_require__(1);
 	var HotelSearch = __webpack_require__(2);
-	var ResultObject = __webpack_require__(4);
-	var AllResultsObject = __webpack_require__(20);
-	var InitialSearchView = __webpack_require__(21);
-	var InitialUserPositionView = __webpack_require__(23);
-	var InitialUserPosition = __webpack_require__(24);
-	var ResultBoxes = __webpack_require__(8);
-	
+	var ResultObject = __webpack_require__(5);
+	var AllResultsObject = __webpack_require__(21);
+	var InitialSearchView = __webpack_require__(22);
+	var InitialUserPositionView = __webpack_require__(24);
+	var InitialUserPosition = __webpack_require__(25);
+	var ResultBoxes = __webpack_require__(9);
 	
 	var keys = {
-	  skyscannerApiKey: 'co301553792687403420764331127549',
-	  expediaApiKey: '49anVGknDW2Ck8ATFBRAAMQ0Ls75wphH'
+	 skyscannerApiKey: 'co301553792687403420764331127549',
+	 expediaApiKey: '49anVGknDW2Ck8ATFBRAAMQ0Ls75wphH'
 	}
 	
 	window.onload = function(){
-	  setDates();
-	  //object loads here
-	  var allResults = new AllResultsObject();
-	  var flightSearch = new FlightSearch()
-	  var hotelSearch = new HotelSearch()
-	  //event listeners here
-	  var initialSearchView = new InitialSearchView();
-	  initialSearchView.handleSearchClick(flightSearch, hotelSearch, keys);
-	  
-	  var initialUserPosition = new InitialUserPosition();
-	   initialUserPosition.getUserLatLng();
-	  //area for Joe to play with
-	  console.log(allResults)
+	 setDates();
+	 //object loads here
+	 var allResults = new AllResultsObject();
+	 var flightSearch = new FlightSearch();
+	 var hotelSearch = new HotelSearch();
+	 var resultDisplay = new ResultBoxes();
+	 //event listeners here
+	 var initialSearchView = new InitialSearchView();
+	 initialSearchView.handleSearchClick(flightSearch, hotelSearch, keys);
+	 
+	 var initialUserPosition = new InitialUserPosition();
+	  initialUserPosition.getUserLatLng();
+	 //area for Joe to play with
+	 allResults.populateFromLocal();
+	 var testResults = JSON.parse(localStorage.getItem('lastSearch')) || [];
+	 resultDisplay.allResults(testResults.results[0]);
+	 //area for ash to play with
 	
-	  //area for ash to play with
+	
+	 //area for nat to play with
 	
 	
-	  //area for nat to play with
-	
-	
-	  //
+	 //
 	}
 	
 	
 	var setDates = function(){
-	  var today = new Date();
-	  var startDate = document.getElementById('searchStartDateInput')
-	  startDate.value = formateDates(today)
-	  var endDate = document.getElementById('searchEndDateInput')
-	  today.setDate(today.getDate() + 2); 
-	  endDate.value = formateDates(today)
+	 var today = new Date();
+	 var startDate = document.getElementById('searchStartDateInput')
+	 startDate.value = formateDates(today)
+	 var endDate = document.getElementById('searchEndDateInput')
+	 today.setDate(today.getDate() + 2); 
+	 endDate.value = formateDates(today)
 	}
 	
 	var formateDates = function(date){
-	  var dd = date.getDate();
-	  var mm = date.getMonth() + 1;
-	  var yyyy = date.getFullYear()
-	  if(mm < 10){
-	    mm = '0'+mm;
-	  }
-	  if(dd < 10){
-	    dd = '0'+dd;  
-	  }
-	  return yyyy+'-'+mm+'-'+dd;
+	 var dd = date.getDate();
+	 var mm = date.getMonth() + 1;
+	 var yyyy = date.getFullYear()
+	 if(mm < 10){
+	   mm = '0'+mm;
+	 }
+	 if(dd < 10){
+	   dd = '0'+dd;  
+	 }
+	 return yyyy+'-'+mm+'-'+dd;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var HotelSearch = __webpack_require__(2);
-	var FlightQuote = __webpack_require__(19);
+	var FlightQuote = __webpack_require__(20);
 	
 	var FlightSearch = function(data){
 	  this.quotes = [];
@@ -229,76 +221,141 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var HotelQuote = __webpack_require__(3);
-	var ResultObject = __webpack_require__(4);
-	var AllResultsObject = __webpack_require__(5);
-	var ResultBoxes = __webpack_require__(8);
-	var Promise = __webpack_require__(9);
+	var HotelQuote = __webpack_require__(4);
+	var ResultObject = __webpack_require__(5);
+	var AllResultsObject = __webpack_require__(6);
+	var ResultBoxes = __webpack_require__(9);
+	var Promise = __webpack_require__(10);
+	
+	var QuoteImage = __webpack_require__(3);
 	
 	var HotelSearch = function(data){
-	  this.quotes = []
+	 this.quotes = []
 	}
 	
 	HotelSearch.prototype = {
-	  getHotelData: function(keys, flightQuote){
-	    return new Promise(function(resolve, reject) {
-	      var url = this.getUrl(flightQuote)
-	      url = url + keys.expediaApiKey;
-	      var request = new XMLHttpRequest();
-	      request.open('GET', url);
-	      request.onload = function(){
-	        if(request.status === 200){
-	          var result = new ResultObject();
-	          var result = new AllResultsObject();
-	          var jsonString = request.responseText;
-	          var hotelData = JSON.parse(jsonString);
-	          console.log('Creating Hotel Objects and then result Objects')
-	          resultObject = this.createResultObject(hotelData, flightQuote)
-	          var resultBox = new ResultBoxes();
-	          //load indv result boxes
-	          //resolve must be called last
-	          resolve(resultObject)
-	        }
-	      }.bind(this)
-	      request.send(null);
-	    }.bind(this))//end of promise
-	  },
+	 getHotelData: function(keys, flightQuote){
+	   return new Promise(function(resolve, reject) {
+	     var url = this.getUrl(flightQuote)
+	     url = url + keys.expediaApiKey;
+	     var request = new XMLHttpRequest();
+	     request.open('GET', url);
+	     request.onload = function(){
+	       if(request.status === 200){
+	         var result = new ResultObject();
+	         var result = new AllResultsObject();
+	         var jsonString = request.responseText;
+	         var hotelData = JSON.parse(jsonString);
+	         console.log('Creating Hotel Objects and then result Objects')
+	         resultObject = this.createResultObject(hotelData, flightQuote)
 	
-	  createResultObject: function(hotelData, flightQuote){
-	    var resultObject = new ResultObject();
-	    resultObject.hotels = this.populateQuotes(hotelData, flightQuote);
-	    resultObject.flightInfo = flightQuote;
-	    resultObject.flightPrice = flightQuote.price;
-	    return resultObject;
-	  },
+	         var quoteImage = new QuoteImage();
 	
-	  getUrl: function(flightQuote){
-	    var depDate = flightQuote.outboundDate;
-	    var retDate = flightQuote.inboundDate;
-	    var city = flightQuote.destinationCity.toUpperCase();
-	    var url = 'http://terminal2.expedia.com/x/mhotels/search?city=' + city + '&checkInDate=' + depDate + '&checkOutDate=' + retDate + '&room1=4&apikey='
-	    return url;
-	  },
+	         quoteImage.getDestinationLatLng(flightQuote).then(function (response) {
+	            return response;
+	         }).then(function (response) {
+	          //call flickr here
+	          var quoteImage = new QuoteImage();
+	          return quoteImage.getImageFromFlickr(response)
+	         }).then(function (response) {
+	          resultObject.imageUrl = response;
+	          resolve(resultObject);
+	         })
+	       }
+	     }.bind(this)
+	     request.send(null);
+	   }.bind(this))//end of promise
+	 },
 	
-	  populateQuotes: function(hotelData, flightQuote){
-	    resultsArray = []
-	    hotelData.hotelList.forEach(function(hotel){
-	      if(hotel.isHotelAvailable){
-	        // this.quotes.push(new HotelQuote(hotel))
-	        resultsArray.push(new HotelQuote(hotel, flightQuote));
-	      }
-	    }.bind(this))
-	    return resultsArray;
-	  }
+	 createResultObject: function(hotelData, flightQuote){
+	
+	  
+	   var resultObject = new ResultObject();
+	   resultObject.hotels = this.populateQuotes(hotelData, flightQuote);
+	   resultObject.flightInfo = flightQuote;
+	   resultObject.flightPrice = flightQuote.price;
+	   
+	   return resultObject;
+	 },
+	
+	 getUrl: function(flightQuote){
+	   var depDate = flightQuote.outboundDate;
+	   var retDate = flightQuote.inboundDate;
+	   var city = flightQuote.destinationCity.toUpperCase();
+	   var url = 'http://terminal2.expedia.com/x/mhotels/search?city=' + city + '&checkInDate=' + depDate + '&checkOutDate=' + retDate + '&room1=4&apikey='
+	   return url;
+	 },
+	
+	 populateQuotes: function(hotelData, flightQuote){
+	   resultsArray = []
+	   hotelData.hotelList.forEach(function(hotel){
+	     if(hotel.isHotelAvailable){
+	       // this.quotes.push(new HotelQuote(hotel))
+	       resultsArray.push(new HotelQuote(hotel, flightQuote));
+	     }
+	   }.bind(this))
+	   return resultsArray;
+	 }
 	
 	}
 	
 	module.exports = HotelSearch;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	var QuoteImage = function(){
+	
+	}
+	
+	QuoteImage.prototype = {
+	  getDestinationLatLng: function(result){
+	    return new Promise(function(resolve, reject) {
+	      var geocoder = new google.maps.Geocoder();
+	      geocoder.geocode({'address': result.destinationCity}, function(results, status){
+	        if (status === google.maps.GeocoderStatus.OK){
+	          var destinationCityLatLng = {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()}
+	            resolve(destinationCityLatLng)
+	          //look here
+	          // this.getImageFromFlickr(destinationCityLatLng)
+	          ////
+	        }else{
+	          resolve({lat: 55.946986700000004, lng: -3.2014716})
+	        }
+	      }.bind(this))
+	    }.bind(this))//end of promise
+	  },
+	  getImageFromFlickr: function(latLngObject){
+	    return new Promise(function(resolve, reject) {
+	        var url = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=d836aea8ef2a786aad020fb216b0b1c4&lat='+ latLngObject.lat +'&lon='+ latLngObject.lng +'&format=json&nojsoncallback=1' 
+	        var request = new XMLHttpRequest();
+	        request.open("GET", url);
+	        request.onload = function () {
+	            if (request.status === 200) {
+	                var jsonString = request.responseText;
+	                var photosObject = JSON.parse(jsonString);
+	                photo = photosObject.photos.photo[0]
+	                resolve(this.constructImgLink(photo));
+	            }
+	        }.bind(this)
+	        request.send();
+	      }.bind(this))//end of promise
+	    }, 
+	    constructImgLink: function(photoObject){
+	      return 'https://farm' + photoObject.farm + '.staticflickr.com/' + photoObject.server + '/' + photoObject.id + '_' + photoObject.secret + '.jpg>'
+	    }
+	}
+	
+	module.exports = QuoteImage;
+	
+	
+	
 	
 
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	var HotelQuote = function(quoteObject, flightQuote){
@@ -325,7 +382,7 @@
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var HotelSearch = __webpack_require__(2);
@@ -335,6 +392,7 @@
 	  this.flightPrice = 0;
 	  this.hotels = []
 	  this.country = null;
+	  this.imageUrl = null;
 	}
 	
 	Result.prototype = {
@@ -351,10 +409,10 @@
 	module.exports = Result;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(6)
+	var _ = __webpack_require__(7)
 	
 	var AllResults = function(){
 	  this.results = []
@@ -419,7 +477,7 @@
 	module.exports = AllResults;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -17030,10 +17088,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(7)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(8)(module)))
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -17049,27 +17107,219 @@
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
-	
 	var ResultBoxes = function(){}
 	
 	
 	ResultBoxes.prototype = {
+	  allResults: function(result){
+	    //create city destination row//
+	    var parentElement = document.getElementById('parentResult');
+	    var row = document.createElement('div');
+	    row.className = "row";
+	    var div = document.createElement('div');
+	    div.className = 'col-12';
+	    var h1 = document.createElement('h1');
+	    h1.innerText = result.flightInfo.destinationCity;
+	    div.appendChild(h1);
+	    row.appendChild(div);
+	    parentElement.appendChild(row);
+	
+	    //create flight details row//
+	    var row = document.createElement('div');
+	    row.className = "row";
+	    //outbound leg//
+	    //outbound carrier logo//
+	    var div = document.createElement('div');
+	    div.className = 'col-2';
+	    var image = document.createElement('img');
+	    image.src = '#'; //this is for carrier logo from API//
+	    div.appendChild(image);
+	    row.appendChild(div);
+	    parentElement.appendChild(row);
+	
+	    //origin city//
+	    var div = document.createElement('div');
+	    div.className = 'col-1';
+	    var p = document.createElement('p');
+	    p.innerText = result.flightInfo.originCity;
+	    div.appendChild(p);
+	    row.appendChild(div);
+	    parentElement.appendChild(row);
+	
+	    //arrow icon//
+	    var div = document.createElement('div');
+	    div.className = 'col-2';
+	    var image = document.createElement('img');
+	    image.src = '#'; //this is for arrow icon//
+	    div.appendChild(image);
+	    row.appendChild(div);
+	    parentElement.appendChild(row);
+	
+	    //destination city//
+	    var div = document.createElement('div');
+	    div.className = 'col-1';
+	    var p = document.createElement('p');
+	    p.innerText = result.flightInfo.destinationCity;
+	    div.appendChild(p);
+	    row.appendChild(div);
+	    parentElement.appendChild(row);
+	
+	    //inbound leg//
+	    //inbound carrier logo//
+	    var div = document.createElement('div');
+	    div.className = 'col-1';
+	    var image = document.createElement('img');
+	    image.src = '#'; //this is for carrier logo from API//
+	    div.appendChild(image);
+	    row.appendChild(div);
+	    parentElement.appendChild(row);
+	
+	    //destination (origin) city//
+	    var div = document.createElement('div');
+	    div.className = 'col-1';
+	    var p = document.createElement('p');
+	    p.innerText = result.flightInfo.destinationCity;
+	    div.appendChild(p);
+	    row.appendChild(div);
+	    parentElement.appendChild(row);
+	
+	    //arrow icon//
+	    var div = document.createElement('div');
+	    div.className = 'col-2';
+	    var image = document.createElement('img');
+	    image.src = '#'; //this is for arrow icon//
+	    div.appendChild(image);
+	    row.appendChild(div);
+	    parentElement.appendChild(row);
+	
+	    //origin (destination) city//
+	    var div = document.createElement('div');
+	    div.className = 'col-1';
+	    var p = document.createElement('p');
+	    p.innerText = result.flightInfo.originCity;
+	    div.appendChild(p);
+	    row.appendChild(div);
+	    parentElement.appendChild(row);
+	
+	
+	    //loop starts here///////////////////
+	    for (var i = 0; i < 3; i++) {
+	       var node = this.createHotelRows(result, i);
+	       parentElement.appendChild(node)
+	       console.log('index:', i)
+	    }
+	
+	
+	
+	
+	
+	  },
+	
+	  displayfirst3hotels: function(){
+	
+	  },
+	
+	
+	  createHotelRows: function(result, index){
+	    //this is the parentelement of hotels
+	    var parentElement = document.createElement('div')
+	    //this is the first hotel row of 2//
+	    var row = document.createElement('div');
+	    row.className = "row";
+	    //hotel name//
+	    var div = document.createElement('div');
+	    div.className = 'col-4';
+	    var p = document.createElement('p');
+	    p.innerText = result.hotels[index].hotelName;
+	    div.appendChild(p);
+	    row.appendChild(div);
+	    parentElement.appendChild(row);
+	
+	    //hotel area//
+	    var div = document.createElement('div');
+	    div.className = 'col-4';
+	    var p = document.createElement('p');
+	    p.innerText = result.hotels[index].locationDescription;
+	    div.appendChild(p);
+	    row.appendChild(div);
+	    parentElement.appendChild(row);
+	
+	    //guest rating//
+	    var div = document.createElement('div');
+	    div.className = 'col-2';
+	    var p = document.createElement('p');
+	    p.innerText = result.hotels[index].guestRating + '%';
+	    div.appendChild(p);
+	    row.appendChild(div);
+	    parentElement.appendChild(row);
+	
+	    //packageprice
+	    var div = document.createElement('div');
+	    div.className = 'col-2';
+	    var p = document.createElement('p');
+	    console.log(result)
+	    p.innerText = '£' + result.cheapestPackage;
+	    div.appendChild(p);
+	    row.appendChild(div);
+	    parentElement.appendChild(row);
+	
+	    //this is the second hotel row of 2 which will be hidden//
+	    var row2 = document.createElement('div');
+	    row2.className = "row hidden";
+	    var div = document.createElement('div');
+	    div.className = 'col-2';
+	    var image = document.createElement('img');
+	    image.src = 'http://images.travelnow.com' + result.hotels[index].thumbnailUrl;
+	    image.className = 'hotelThumbnail';
+	    div.appendChild(image);
+	    row2.appendChild(div);
+	    parentElement.appendChild(row);
+	    //result.hotels.thumbnailURL//
+	
+	    //create number of nights//
+	    var div = document.createElement('div');
+	    div.className = 'col-2';
+	    var p = document.createElement('p');
+	    p.innerText = 'no of nights';
+	    div.appendChild(p);
+	    row2.appendChild(div);
+	    parentElement.appendChild(row2);
+	
+	    //create hotel description//
+	    var div = document.createElement('div');
+	    div.className = 'col-4';
+	    var p = document.createElement('p');
+	    p.innerText = result.hotels[index].description;
+	    div.appendChild(p);
+	    row2.appendChild(div);
+	    parentElement.appendChild(row2);
+	
+	    //create star rating//
+	    var div = document.createElement('div');
+	    div.className = 'col-2';
+	    var p = document.createElement('p');
+	    p.innerText = result.hotels[index].starRating;
+	    div.appendChild(p);
+	    row2.appendChild(div);
+	    parentElement.appendChild(row2);
+	
+	    //create book button//
+	    var div = document.createElement('div');
+	    div.className = 'col-2';
+	    var image = document.createElement('img');
+	    image.src = '#'; //this is for book button//
+	    div.appendChild(image);
+	    row2.appendChild(div);
+	    parentElement.appendChild(row2);
+	    return parentElement
+	  }
 	
 	}
 	
 	module.exports = ResultBoxes;
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	module.exports = __webpack_require__(10)
-
 
 /***/ },
 /* 10 */
@@ -17077,12 +17327,7 @@
 
 	'use strict';
 	
-	module.exports = __webpack_require__(11);
-	__webpack_require__(13);
-	__webpack_require__(14);
-	__webpack_require__(15);
-	__webpack_require__(16);
-	__webpack_require__(18);
+	module.exports = __webpack_require__(11)
 
 
 /***/ },
@@ -17091,7 +17336,21 @@
 
 	'use strict';
 	
-	var asap = __webpack_require__(12);
+	module.exports = __webpack_require__(12);
+	__webpack_require__(14);
+	__webpack_require__(15);
+	__webpack_require__(16);
+	__webpack_require__(17);
+	__webpack_require__(19);
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var asap = __webpack_require__(13);
 	
 	function noop() {}
 	
@@ -17305,7 +17564,7 @@
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
@@ -17532,12 +17791,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Promise = __webpack_require__(11);
+	var Promise = __webpack_require__(12);
 	
 	module.exports = Promise;
 	Promise.prototype.done = function (onFulfilled, onRejected) {
@@ -17551,12 +17810,12 @@
 
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Promise = __webpack_require__(11);
+	var Promise = __webpack_require__(12);
 	
 	module.exports = Promise;
 	Promise.prototype['finally'] = function (f) {
@@ -17573,14 +17832,14 @@
 
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	//This file contains the ES6 extensions to the core Promises/A+ API
 	
-	var Promise = __webpack_require__(11);
+	var Promise = __webpack_require__(12);
 	
 	module.exports = Promise;
 	
@@ -17686,7 +17945,7 @@
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17694,8 +17953,8 @@
 	// This file contains then/promise specific extensions that are only useful
 	// for node.js interop
 	
-	var Promise = __webpack_require__(11);
-	var asap = __webpack_require__(17);
+	var Promise = __webpack_require__(12);
+	var asap = __webpack_require__(18);
 	
 	module.exports = Promise;
 	
@@ -17822,13 +18081,13 @@
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	// rawAsap provides everything we need except exception management.
-	var rawAsap = __webpack_require__(12);
+	var rawAsap = __webpack_require__(13);
 	// RawTasks are recycled to reduce GC churn.
 	var freeTasks = [];
 	// We queue errors to ensure they are thrown in right order (FIFO).
@@ -17894,12 +18153,12 @@
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Promise = __webpack_require__(11);
+	var Promise = __webpack_require__(12);
 	
 	module.exports = Promise;
 	Promise.enableSynchronous = function () {
@@ -17962,7 +18221,7 @@
 
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports) {
 
 	//nats comment//
@@ -17989,10 +18248,10 @@
 	module.exports = FlightQuote;
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(6)
+	var _ = __webpack_require__(7)
 	
 	var AllResults = function(){
 	  this.results = []
@@ -18057,12 +18316,12 @@
 	module.exports = AllResults;
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var InitialSearchParams = __webpack_require__(22);
-	var ResultObject = __webpack_require__(4);
-	var AllResultsObject = __webpack_require__(20);
+	var InitialSearchParams = __webpack_require__(23);
+	var ResultObject = __webpack_require__(5);
+	var AllResultsObject = __webpack_require__(21);
 	
 	var InitialSearchView = function(){}
 	
@@ -18094,9 +18353,9 @@
 	          console.log('all results:',allResults)
 	          //save locally.
 	          localStorage.setItem('lastSearch', JSON.stringify(allResults));
-	          var retrievedObject = JSON.parse(localStorage.getItem('allSearches')) || [];
-	          retrievedObject.push(allResults);
-	          localStorage.setItem('allSearches', JSON.stringify(retrievedObject));
+	          // var retrievedObject = JSON.parse(localStorage.getItem('allSearches')) || [];
+	          // retrievedObject.push(allResults);
+	          // localStorage.setItem('allSearches', JSON.stringify(retrievedObject));
 	        });
 	    }.bind(this);
 	  },
@@ -18148,7 +18407,7 @@
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
 	var InitialSearchParams = function(latLng, startDate, endDate){
@@ -18166,10 +18425,10 @@
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var InitialUserPosition = __webpack_require__(24); 
+	var InitialUserPosition = __webpack_require__(25); 
 	
 	var InitialUserPositionView = function(){
 	
@@ -18185,11 +18444,11 @@
 	module.exports = InitialUserPositionView;
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var DynamicSearch = __webpack_require__(25);
-	var DynamicSearchView = __webpack_require__(26)
+	var DynamicSearch = __webpack_require__(26);
+	var DynamicSearchView = __webpack_require__(27)
 	
 	var InitialUserPosition = function(){}
 	
@@ -18211,7 +18470,7 @@
 	          if(type === 'locality'){
 	            console.log(component.long_name)
 	            // return component.long_name;
-	            var InitialUserPositionView = __webpack_require__(23); 
+	            var InitialUserPositionView = __webpack_require__(24); 
 	            var positionView = new InitialUserPositionView();
 	            positionView.displayLocation(component.long_name);
 	            var locationData = {origin: lat + "," + lng + "-latlong" }
@@ -18230,7 +18489,7 @@
 	module.exports = InitialUserPosition;
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports) {
 
 	var DynamicSearch = function(){
@@ -18288,7 +18547,7 @@
 
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports) {
 
 	var DynamicSearchView = function(){
