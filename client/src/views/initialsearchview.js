@@ -32,9 +32,9 @@ InitialSearchView.prototype = {
           console.log('all results:',allResults)
           //save locally.
           localStorage.setItem('lastSearch', JSON.stringify(allResults));
-          var retrievedObject = JSON.parse(localStorage.getItem('allSearches')) || [];
-          retrievedObject.push(allResults);
-          localStorage.setItem('allSearches', JSON.stringify(retrievedObject));
+          // var retrievedObject = JSON.parse(localStorage.getItem('allSearches')) || [];
+          // retrievedObject.push(allResults);
+          // localStorage.setItem('allSearches', JSON.stringify(retrievedObject));
         });
     }.bind(this);
   },
