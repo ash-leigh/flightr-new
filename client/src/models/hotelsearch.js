@@ -29,18 +29,21 @@ HotelSearch.prototype = {
          var quoteImage = new QuoteImage();
 
          quoteImage.getDestinationLatLng(flightQuote).then(function (response) {
-            return response;
-         }).then(function (response) {
+          return response;
+        }).then(function (response) {
           //call flickr here
           var quoteImage = new QuoteImage();
           return quoteImage.getImageFromFlickr(response)
-         }).then(function (response) {
+        }).then(function (response) {
           resultObject.imageUrl = response;
+          var ResultBoxes = require('../views/allresultsview.js');
+          renderBox = new ResultBoxes();
+          renderBox.populateAllResults(resultObject);
           resolve(resultObject);
-         })
-       }
-     }.bind(this)
-     request.send(null);
+        })
+      }
+    }.bind(this)
+    request.send(null);
    }.bind(this))//end of promise
  },
 

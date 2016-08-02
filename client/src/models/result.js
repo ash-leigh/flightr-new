@@ -15,6 +15,22 @@ Result.prototype = {
 
   populateHotels: function(){
     console.log(this.flightInfo.Quotes)
+  },
+
+  orderHotelsbyPrice: function(){
+    this.hotels = _.sortBy(this.hotels, 'nightlyPrice')
+  },
+
+  orderHotelsbyStarRating: function(){
+      this.hotels = _.sortBy(this.hotels, 'starRating')
+  },
+
+  orderHotelsbyPercentRating: function(){
+      this.hotels = _.sortBy(this.hotels, 'percentRecommended')
+  },
+
+  orderHotelsbyGuestRating: function(){
+      this.hotels = _.sortBy(this.hotels, 'guestRating')
   }
 
 }

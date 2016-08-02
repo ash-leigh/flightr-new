@@ -144,11 +144,121 @@ html {
   color: #000066;
 }
 
-.hidden {
-  display:none; 
+.destination {
+ text-transform: uppercase;
+ background-color: white;
+ font-size: 28px;
+ font-family: helvetica, sans-serif;
+ margin-top: 20px;
+ margin-bottom: 20px;
+ font-weight: bolder;
+ border: solid grey 0.5px;
+ border-radius: 5px;
+}
+
+.flight {
+ background-color: white;
+ font-family: helvetica, sans-serif;
+ font-size: 18px;
+ color: black;
+ border-radius: 0px;
+ border: grey 0;
+ padding: 10px;
+ margin-top: 25px;
+ margin-bottom: 25px;
+ text-transform: uppercase;
+ font-weight: lighter;
+ padding: 0px;
+}
+
+.planeIcon {
+ height: 3em;
+ width: auto;
+}
+
+.arrowIcon {
+ height: 3em;
+ width: auto;
+}
+
+.hotel{
+ background-color: #c1dfd9 ;
+ color: #3b3a36 ;
+ font-family: helvetica, sans-serif;
+ height: 46px;
+ border-radius:;
+ border: ;
+ padding: 8px;
+ text-transform: uppercase;
+ letter-spacing: 1.5px;
+ line-height: 0.1;
+ margin-top: 10px;
+ margin-bottom: 10px;
+ vertical-align: middle;
+ text-align: left;
+ padding-left: 20px;
+ font-weight: ;
+}
+
+.from {
+ text-transform: lowercase;
+ font-weight: bolder;
+ padding-left: 10px;
+}
+
+.hiddenrow {
+ display: ; 
+ background-color: white;
+ font-family: helvetica, sans-serif;
+ color: #3b3a36 ;
+ border-radius: 2px;
+ border: ;
+ padding: 10px;
+ font-size: 14px;
+ height: 200px;
+ text-align: left;
+}
+
+.hiddenrow h3 {
+ padding-left: 5px;
+ margin-top: -1px;
+ text-transform: uppercase;
+ text-align: 
+ color: #3b3a36 ;
+}
+
+.hiddenrow h4 {
+ padding-left: 5px;
+ text-transform: uppercase;
+ font-weight: normal;
+ color: #3b3a36 ;
+}
+
+.hiddenrow p {
+ padding-left: 5px;
+ text-align: justify;
+ font-weight: lighter;
+ padding-top: 
+ color: #3b3a36 ;
 }
 
 .hotelThumbnail {
-  height: 3em;
-  width: auto;
+ height: 12em;
+ width: auto;
+ border-radius: 00px;
+ padding-right: 5px;
+ margin-left: 0px;
+ margin-top: ;
+}
+
+.hotelDescription {
+ background-color: white;
+ font-family: helvetica, sans-serif;
+ color: black;
+ font-size: 14px;
+ text-align: justify;
+}
+
+.hotelName {
+ margin-top: -50px;
 }

@@ -28,7 +28,7 @@ window.onload = function(){
  //area for Joe to play with
  allResults.populateFromLocal();
  var testResults = JSON.parse(localStorage.getItem('lastSearch')) || [];
- resultDisplay.allResults(testResults.results[0]);
+ // resultDisplay.allResults(testResults.results[0]);
  //area for ash to play with
 
 
