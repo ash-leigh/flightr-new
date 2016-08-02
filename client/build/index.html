@@ -1,50 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Flightr</title>
-<link rel="stylesheet" type="text/css" href="main.css">
-<script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script type="text/javascript" src="bundle.js"></script>
+  <title>Flightr</title>
+  <link rel="stylesheet" type="text/css" href="main.css">
+  <script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  <script type="text/javascript" src="bundle.js"></script>
 </head>
 <body>
 
- <div class='row'>
+  <!-- ASH new -->
+  <div class='row' id='initPage'>
    <div class='col-12'>
-     <!-- logo goes here -->
-     <img src='./images/flightr_logo_blue.png'>
-   </div>
- </div>
 
- <div class='row'>
-   <div class='col-2'></div>
-   <div class='col-8'>
+    <div class='row'>
 
-  
+      <div id=initLogo></div>
 
-     <div class='row'>
+      <div id='initHeader'>
 
        <div id="suggestedOrigin"></div>
-       <div id='dynamicSearchClick'>Change airport</div>
-       <div id="toggledDynamicSearchContent">
+       <div id='dynamicSearchClick'>[ change origin ]</div>
 
-         <input type="text" id="userOriginSelect"list="datalist" placeholder="destination">
-         <datalist id="datalist"></datalist>
+       <div class='row'>
 
+
+         <div id="toggledDynamicSearchContent">
+
+           <input type="text" id="userOriginSelect" list="datalist" placeholder="origin">
+           <datalist id="datalist"></datalist>
+
+         </div>
        </div>
-       <!-- ashleighs drop down here -->
-       <!-- filter options here -->
+
+       <div class='row'>
+         <div id='dates'>
+           <!-- search row -->
+           from  >>
+           <input type="date" id="searchStartDateInput">
+           to  >>
+           <input type="date" id="searchEndDateInput">
+           <input type='button' value="GO" id="initialSearchButton">
+         </div>
+       </div>
+
+
+
+     </div>
+   </div>
+
+
+
+ </div>
+</div>
+
+<!-- end ASH new -->
+
+<!-- <div class='row'>
+ <div class='col-2'></div>
+ <div class='col-8'>
+
+
+
+   <div class='row'>
+
+     <div id="suggestedOrigin"></div>
+     <div id='dynamicSearchClick'>Change airport</div>
+     <div id="toggledDynamicSearchContent">
+
+       <input type="text" id="userOriginSelect"list="datalist" placeholder="destination">
+       <datalist id="datalist"></datalist>
+
      </div>
 
+</div>
+
      <div class='row'>
-       <!-- search row -->
+       
        <input type="date" id="searchStartDateInput">
        <input type="date" id="searchEndDateInput">
        <input type='button' value="GO" id="initialSearchButton">
-     </div>
+     </div> -->
 
      <div class='row' id='parentResult'>
-       <!-- results populated here -->
+
      </div>
    </div>
    <div class='col-2'></div>

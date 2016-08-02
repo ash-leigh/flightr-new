@@ -18437,7 +18437,10 @@
 	InitialUserPositionView.prototype = {
 	  displayLocation: function(location){
 	      var displayDiv = document.getElementById("suggestedOrigin");
-	      displayDiv.innerHTML = "You are in " + location;
+	      displayDiv.innerHTML = "not leaving from " + location + "?";
+	
+	      var dates = document.getElementById('dates');
+	      dates.id = 'datesInit';
 	  }
 	}
 	
@@ -18513,7 +18516,8 @@
 	      datalist.innerHTML = "";
 	      data.Places.forEach(function(place){
 	
-	        var option = document.createElement('option');
+	        var option = document.createElement('option')
+	        // option.className = 'dynamicSearchOptions';
 	        option.text = place.PlaceId;
 	        option.value = place.PlaceName + "/" + place.PlaceId;;
 	        datalist.appendChild(option);
@@ -18564,6 +18568,9 @@
 	      ? toggledDynamicSearchContent.style.height = '50px' 
 	      : toggledDynamicSearchContent.style.height = '0px';
 	    }, false );
+	
+	
+	
 	  }
 	}
 	

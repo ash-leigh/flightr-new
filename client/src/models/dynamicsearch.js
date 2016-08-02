@@ -19,7 +19,8 @@ DynamicSearch.prototype = {
       datalist.innerHTML = "";
       data.Places.forEach(function(place){
 
-        var option = document.createElement('option');
+        var option = document.createElement('option')
+        // option.className = 'dynamicSearchOptions';
         option.text = place.PlaceId;
         option.value = place.PlaceName + "/" + place.PlaceId;;
         datalist.appendChild(option);

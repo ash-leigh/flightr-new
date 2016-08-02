@@ -12,6 +12,9 @@ DynamicSearchView.prototype = {
       ? toggledDynamicSearchContent.style.height = '50px' 
       : toggledDynamicSearchContent.style.height = '0px';
     }, false );
+
+
+
   }
 }
 

@@ -1,6 +1,6 @@
 /* GRID SET UP  */
 * {
-   box-sizing: border-box;
+ box-sizing: border-box;
 }
 .col-1 {width: 8.33%;}
 .col-2 {width: 16.66%;}
@@ -16,30 +16,125 @@
 .col-12 {width: 100%;}
 
 [class*="col-"] {
-   float: left;
-   padding: 0.01em;
-   border: 1px solid white;
-/* Using borders is great for testing successful grid setup */
-/*    border: 1px solid red;*/
+ float: left;
+ padding: 0.01em;
+ /*border: 1px solid white;*/
+ /* Using borders is great for testing successful grid setup */
+ /*    border: 1px solid red;*/
 }
 
 .row::after {
-    content: "";
-    clear: both;
-    display: block;
+  content: "";
+  clear: both;
+  display: block;
 }
 /* END OF GRID SETUP */
 body {
+  margin: 0px;
+  padding: 0px;
   text-align: center;
 }
 
 html {
-  background: url('images/background.jpg');
+  margin: 0px;
+  padding: 0px;
+}
+
+/*Ash added CSS*/
+#initPage{
+  background: linear-gradient(rgba(0, 103, 140, 0.2), rgba(0, 103, 240, 0.2)), url('images/background_2.jpg') no-repeat center top;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  color: white;
+  position: relative;
+  padding: 3em;
+  text-align: center;
 }
+
+#initLogo{
+  background: url('images/white_logo.png') no-repeat left top;
+  background-size: 30%;
+  height: 10em;
+  margin: 2em;
+}
+
+#initHeader{
+  position: relative;
+  height: 20em;
+  background-color: rgba(255, 255, 255, 0.7);
+  outline: 0.3em white solid;
+  outline-offset: 0.5em;
+  padding: 2em;
+  margin: 2em;
+}
+
+#suggestedOrigin{
+ height: 100%;
+ text-align: left;
+ color: #3b3a36;
+ font-family: helvetica, sans-serif;
+ font-size: 25px;
+ font-weight: bold;
+ display: inline;
+}
+
+#dynamicSearchClick{
+ display:none; 
+}
+
+#dynamicSearchClickInit{
+ height: 5em;
+ display: inline;
+ font-family: helvetica, sans-serif;
+ font-size: 20px;
+ color: #3b3a36;
+}
+
+#toggledDynamicSearchContent{
+  margin: 1em;
+  overflow: hidden;
+  clear: both;
+  height: 0em;
+  width: 100%;
+  text-align: center;
+  transition:         height 500ms ease;
+  -moz-transition:    height 500ms ease;
+  -ms-transition:     height 500ms ease;
+  -o-transition:      height 500ms ease;
+  -webkit-transition: height 500ms ease;
+}
+
+#userOriginSelect{
+ width: 60%;
+ height: 2.5em;
+ font-family: helvetica, sans-serif;
+ font-size: 15px;
+ color: #3b3a36;
+ outline: none;
+ border: none;
+}
+
+#userOriginSelect:focus{
+  background-color: #ffffff;
+  outline: none;
+  border: none;
+}
+
+#dates{
+  display: none;
+}
+
+#datesInit{
+  display: block;
+  margin: 3em;
+  font-family: helvetica, sans-serif;
+  font-size: 20px;
+  color: #3b3a36;
+}
+
+
+/*END*/
+
 
 #indv-result-box {
   margin-top:1em;
@@ -49,33 +144,8 @@ html {
   color: #000066;
 }
 
-#suggestedOrigin{
- height:20px;
-}
-#dynamicSearchClick{
- display:none; 
-}
-
 .hidden {
   display:none; 
-}
-
-#dynamicSearchClickInit{
- height:20px;
-}
-#toggledDynamicSearchContent{
- background-color: #e3e3e3 ;
- overflow: hidden;
- clear: both;
- height: 0px;
- transition:             height 500ms ease;
-     -moz-transition:    height 500ms ease;
-     -ms-transition:     height 500ms ease;
-     -o-transition:      height 500ms ease;
-     -webkit-transition: height 500ms ease;
-}
-#userOriginSelect{
- margin: 15px;
 }
 
 .hotelThumbnail {
