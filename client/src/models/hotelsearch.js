@@ -38,6 +38,7 @@ HotelSearch.prototype = {
           resultObject.imageUrl = response;
           var ResultBoxes = require('../views/allresultsview.js');
           renderBox = new ResultBoxes();
+          resultObject.orderHotelsbyPrice();
           renderBox.populateAllResults(resultObject);
           resolve(resultObject);
         })

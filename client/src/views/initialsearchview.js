@@ -17,7 +17,8 @@ InitialSearchView.prototype = {
 
     button.onclick = function(){
       console.log('clicked')
-
+      var reset = document.getElementById('masterparent');
+           reset.innerHTML = "";
         var locationData = getPositionData();
         flightSearch.getFlightData(keys, locationData).then(function(response) {
           return response.quotes
