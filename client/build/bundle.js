@@ -17082,8 +17082,12 @@
 	
 	ResultBoxes.prototype = {
 	  populateAllResults: function(result){
-	    var loader = document.getElementById('spinner');
-	    loader.id = 'spinnerHide';
+	
+	
+	    if(document.getElementById('spinner')){
+	        var loader = document.getElementById('spinner')
+	        loader.id = 'spinnerHide';
+	    };
 	
 	    var button = document.getElementById('initialSearchButton');
 	
@@ -17105,7 +17109,7 @@
 	
 	createSortHotelsRow: function(result, subMasterParent, hotelsRow) {
 	    var row = this.createRow();
-	    var col12 = this.createCol('12');
+	    var col9 = this.createCol('9');
 	    var priceLbl = document.createElement('label');
 	    priceLbl.innerText = "Hotel Price";
 	    priceLbl.className = "hotelsort";
@@ -17119,12 +17123,45 @@
 	    guesRatingLbl.innerText = "Guest Rating";
 	    guesRatingLbl.className = "hotelsort";
 	
-	    col12.appendChild(priceLbl);
-	    col12.appendChild(startRatingLbl);
-	    col12.appendChild(guestRecLbl);
-	    col12.appendChild(guesRatingLbl);
-	    row.appendChild(col12);
+	    col9.appendChild(priceLbl);
+	    col9.appendChild(startRatingLbl);
+	    col9.appendChild(guestRecLbl);
+	    col9.appendChild(guesRatingLbl);
+	    row.appendChild(col9);
 	    subMasterParent.appendChild(row)
+	
+	    //plus and minus people here
+	    var col3 = document.createElement('div');
+	    col3.className = "col-3";
+	    var innerRow = document.createElement('div');
+	    innerRow.className = "row";
+	    //minus column
+	    var col4minus = document.createElement('div');
+	    col4minus.className = "col-4";
+	    var minus = document.createElement('h2')
+	    minus.innerText = "-"
+	    col4minus.appendChild(minus)
+	    innerRow.appendChild(col4minus);
+	    //poeople column
+	    var col4guest = document.createElement('div');
+	    col4guest.className = "col-4";
+	    var guest = document.createElement('h2')
+	    guest.innerText = "1"
+	    col4guest.appendChild(guest)
+	    innerRow.appendChild(col4guest);
+	    //plus column here
+	    var col4plus = document.createElement('div');
+	    col4plus.className = "col-4";
+	    var plus = document.createElement('h2')
+	    plus.innerText = "+"
+	    col4plus.appendChild(plus)
+	    innerRow.appendChild(col4plus);
+	
+	
+	
+	    col3.appendChild(innerRow)
+	    row.appendChild(col3)
+	    //append plus minus above
 	
 	    //order hotels by price
 	    priceLbl.onclick = function(){
@@ -17180,7 +17217,8 @@
 	
 	    var btn = document.createElement('input');
 	    btn.type = 'button';
-	    btn.value = 'Show more hotels'
+	    btn.value = 'Show more hotels';
+	    btn.className = 'moreButton';
 	
 	    btn.onclick = function(event){
 	        var kids = hotelsRow.children;
@@ -17228,85 +17266,95 @@
 	    var outerHotelRow = this.createRow();
 	    outerHotelRow.id = 'outerHotelRow'
 	
+	    //first hotel row//
 	    var row = document.createElement('div');
 	    row.className = "row hotel";
-	    //hotel name//
+	    //hotel name & location description//
 	    var div = document.createElement('div');
 	    div.className = 'col-10';
+	    //prevents lines being too long
 	    var p = document.createElement('p');
 	    if(hotel.hotelName.length + hotel.locationDescription < 60){
-	      p.innerText = hotel.hotelName + ', ' + hotel.locationDescription;
-	  }else{
-	     p.innerText = hotel.hotelName 
-	 }
-	 div.appendChild(p);
-	 row.appendChild(div);
+	       p.innerText = hotel.hotelName + ', ' + hotel.locationDescription;
+	   }else{
+	    p.innerText = hotel.hotelName 
+	}
+	     //end prevent
 	
-	 var div = document.createElement('div');
-	 div.className = 'col-2';
-	 var p = document.createElement('p');
-	 p.innerText = "£" + Math.floor(((this.calculateDaystravelled() * hotel.nightlyPrice)/1.33) + hotel.flightQuote.price);
-	 p.className = 'from';
-	 div.appendChild(p);
-	 row.appendChild(div);
+	     div.appendChild(p);
+	     row.appendChild(div);
 	
-	 var row2 = document.createElement('div');
-	 row2.className = "row hiddenrow";
-	 var div = document.createElement('div');
-	 div.className = 'col-3';
-	 var image = document.createElement('img');
-	 image.src = 'http://images.travelnow.com' + hotel.thumbnailUrl;
-	 image.className = 'hotelThumbnail';
-	 div.appendChild(image);
-	 row2.appendChild(div);
+	    //cheapest package price//
+	    var div = document.createElement('div');
+	    div.className = 'col-2';
+	    var p = document.createElement('p');
+	    p.innerText = "£" + Math.floor(((this.calculateDaystravelled() * hotel.nightlyPrice)/1.33) + hotel.flightQuote.price);
+	    p.className = 'from';
+	    div.appendChild(p);
+	    row.appendChild(div);
 	
-	 var div = document.createElement('div');
-	 div.className = 'col-6';
-	 var h3 = document.createElement('h3');
-	 h3.innerText = hotel.hotelName + ', ' + hotel.locationDescription;
-	 h3.classname = 'hotelName';
-	 var h4 = document.createElement('h4');
+	    //hidden hotel row//
+	    //thumbnail hotel image//
+	    var row2 = document.createElement('div');
+	    row2.className = "row hiddenrow";
+	    var div = document.createElement('div');
+	    div.className = 'col-3';
+	    var image = document.createElement('img');
+	    image.src = 'http://images.travelnow.com' + hotel.thumbnailUrl;
+	    image.className = 'hotelThumbnail';
+	    div.appendChild(image);
+	    row2.appendChild(div);
 	
-	 img = document.createElement('img')
-	 var stars = "/images/" + Math.floor(hotel.starRating) + "-stars.png";
-	 img.src = stars;
-	 img.className = "starRatings"
+	    //hotel name, location, star rating and description//
+	    var div = document.createElement('div');
+	    div.className = 'col-6';
+	    var h3 = document.createElement('h3');
+	    h3.innerText = hotel.hotelName + ', ' + hotel.locationDescription;
+	    h3.classname = 'hotelName';
+	    var h4 = document.createElement('h4');
+	    img = document.createElement('img')
+	    var stars = '/images/' + Math.floor(hotel.starRating)  + '-stars.png';
+	    img.src = stars;
+	    img.className = "starRatings"
+	    // h4.innerText = 'Our star rating: ' + Math.floor(hotel.starRating)  + '/5';
+	    h4.classname = 'starRating';
+	    var p = document.createElement('p');
+	    p.innerText = hotel.description; 
+	    p.classname = 'hotelDescription';
+	    div.appendChild(h3);
+	    div.appendChild(img);
+	    div.appendChild(p);
+	    row2.appendChild(div);
 	
+	    //book, guest rating and percentage recommended//
+	    var div = document.createElement('div');
+	    div.className = 'col-3 ratings';
+	    var h3 = document.createElement('h3');
+	    h3.innerText = 'book';
+	    var h1 = document.createElement('h1');
+	    h1.innerText = 'Guest rating  ' + hotel.guestRating + '/5';
+	    var h2 = document.createElement('h2');
+	    h2.innerText = 'Recommended  ' + hotel.percentRecommended + '%';
+	    div.appendChild(h3);
+	    div.appendChild(h1);
+	    div.appendChild(h2);
+	    row2.appendChild(div);
+	    row2.hidden = true
 	
-	 var p = document.createElement('p');
-	 p.innerText = hotel.description; 
-	 p.classname = 'hotelDescription';
-	 div.appendChild(h3);
-	 div.appendChild(img);
-	 div.appendChild(p);
-	 row2.appendChild(div);
+	    outerHotelRow.appendChild(row);
+	    outerHotelRow.appendChild(row2);
 	
-	 var div = document.createElement('div');
-	 div.className = 'col-3';
-	 var h3 = document.createElement('h3');
-	 h3.innerText = hotel.guestRating;
-	 var p = document.createElement('p');
-	 p.innerText = hotel.guestRating;
-	 div.appendChild(p);
-	 div.appendChild(h3);
-	 row2.appendChild(div);
-	 row2.hidden = true
-	
-	
-	
-	 outerHotelRow.appendChild(row);
-	 outerHotelRow.appendChild(row2);
-	
-	 outerHotelRow.onclick = function(){
-	        //add transition classes here
-	        console.log('OuterHotel Clicked...')
-	        if(row2.hidden === false){
-	            row2.hidden = true
-	        }else{
-	           row2.hidden = false 
-	       };
-	   }
-	   return outerHotelRow;
+	    //onclick for hidden rows//
+	    outerHotelRow.onclick = function(){
+	    //add transition classes here
+	    console.log('OuterHotel Clicked...')
+	    if(row2.hidden === false){
+	        row2.hidden = true
+	    }else{
+	     row2.hidden = false 
+	 };
+	}
+	return outerHotelRow;
 	},
 	
 	createFlightRow: function(result, subMasterParent){
@@ -17397,15 +17445,15 @@
 	
 	    createHeader: function(result, subMasterParent){
 	
-	       var row = document.createElement('div');
-	       row.className = "row destination";
-	       row.style.backgroundImage = "url('" + result.imageUrl + "')"
-	       var div = document.createElement('div');
-	       div.className = 'col-12';
+	     var row = document.createElement('div');
+	     row.className = "row destination";
+	     row.style.backgroundImage = "url('" + result.imageUrl + "')"
+	     var div = document.createElement('div');
+	     div.className = 'col-12';
 	
-	       var headerText = document.createElement('div')
-	       headerText.className = 'destinationTitle'
-	       headerText.innerHTML = result.flightInfo.destinationCity;
+	     var headerText = document.createElement('div')
+	     headerText.className = 'destinationTitle'
+	     headerText.innerHTML = result.flightInfo.destinationCity;
 	
 	       // var h1 = document.createElement('h1');
 	       // h1.innerText = result.flightInfo.destinationCity;
@@ -17429,14 +17477,14 @@
 	},
 	
 	calculateDaystravelled: function(){
-	   var depDate = document.getElementById('searchStartDateInput')
-	   var retDate = document.getElementById('searchEndDateInput')
-	   var oneDay = 24*60*60*1000;
-	   var firstDate = new Date(depDate.value);
-	   var secondDate = new Date(retDate.value);
-	   var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)))
-	   return diffDays;
-	   }
+	 var depDate = document.getElementById('searchStartDateInput')
+	 var retDate = document.getElementById('searchEndDateInput')
+	 var oneDay = 24*60*60*1000;
+	 var firstDate = new Date(depDate.value);
+	 var secondDate = new Date(retDate.value);
+	 var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)))
+	 return diffDays;
+	}
 	
 	}
 	

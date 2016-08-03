@@ -61,7 +61,7 @@ html {
 
 #initHeader{
   position: relative;
-  height: 18em;
+  height: 23em;
   background-color: rgba(255, 255, 255, 0.6);
   outline: 0.3em white solid;
   outline-offset: 0.5em;
@@ -217,14 +217,12 @@ html {
    background-position: center;
    background-repeat: no-repeat;
    overflow: hidden;
-   height: 12em;
-   /*/* margin-top: 5em;*/
-   margin-bottom: 5em;
+   height: 10em;
+   margin-top: 2em;
    position: relative;
  }
 
  .destinationTitle {
-  border-top: 0.2em solid #3b3a36;
   background-color: rgba(255,255,255,0.7);
   color: #3b3a36;
   font-size: 35px;
@@ -234,6 +232,7 @@ html {
   padding: 0.6em;
   font-weight: bolder;
   position: absolute;
+  right: 0.05em;
   bottom: 0;
   width: 100%;
 }
@@ -254,37 +253,75 @@ html {
 }
 
 .planeIcon {
- height: 2em;
+ height: 3em;
  width: auto;
 }
 
 .arrowIcon {
- height: 1em;
+ height: 3em;
  width: auto;
 }
 
-.hotel{
-  background-color: #c1dfd9 ;
-  color: #3b3a36 ;
+.hotelsort {
+  color: white;
   font-family: helvetica, sans-serif;
-  height: 46px;
-  border-radius:;
-  border: ;
-  padding: 8px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  line-height: 0.1;
+  background: #3b3a36;
+  width: 100%;
+  padding: 11px;
   margin-top: 10px;
-  margin-bottom: 10px;
-  vertical-align: middle;
-  text-align: left;
-  padding-left: 20px;
-  font-weight: ;
+  margin-bottom: 0px;
+  border-radius: 5px;
+  font-weight: lighter;
+  letter-spacing: 1.5px;
+}
+
+.hotelsort:hover {
+  color: #c1dfd9;
+  /*font-weight: bolder;*/
+}
+
+.moreButton {
+  color: white;
+  font-family: helvetica, sans-serif;
+  background: #3b3a36;
+  width:;
+  padding: 12px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  border-radius: 5px;
+  font-weight: lighter;
+  letter-spacing: 1.5px;
+  font-size: 16px;
+  box-shadow: none;
+}
+
+.moreButton:hover {
+  color: #c1dfd9;
+  font-weight: bolder;
+}
+
+.hotel{
+ background-color: #c1dfd9 ;
+ color: #3b3a36 ;
+ font-family: helvetica, sans-serif;
+ height: 46px;
+ border-radius:;
+ border: ;
+ padding: 8px;
+ text-transform: uppercase;
+ letter-spacing: 1.5px;
+ line-height: 0.1;
+ margin-top: 22px;
+ margin-bottom: 10px;
+ vertical-align: middle;
+ text-align: left;
+ padding-left: 20px;
+ font-weight: lighter;
 }
 
 .hotel:hover{
-  height: 56px;
-  transition: height 500ms ease;
+  height: 46px;
+  /*transition: height 500ms ease;*/
   background: linear-gradient( #c1dfd9, #b3c2bf);
   text-decoration: underline;
 }
@@ -331,6 +368,54 @@ html {
  color: #3b3a36 ;
 }
 
+.ratings h3 {
+  color: white;
+  font-family: helvetica, sans-serif;
+  background: #3b3a36;
+  width: 95%;
+  padding: 11px;
+  margin-top: 0px;
+  margin-bottom: 48px;
+  border-radius: 5px;
+  font-weight: lighter;
+  letter-spacing: 1.5px;
+  text-align: center;
+  margin-right: -10px;
+  float: right;
+  }
+
+.ratings h3:hover {
+  color: #c1dfd9;
+  font-weight: bolder;
+  }
+
+.ratings h1{
+  background-color: ;
+  text-align: right;
+  border: ;
+  border-radius: ;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: #3b3a36;
+  margin-top: 20px;
+  margin-right: -10px;
+  font-weight: lighter;
+}  
+
+.ratings h2{
+  display:;
+  background-color: ;
+  text-align: right;
+  border: ;
+  border-radius: ;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: #3b3a36;
+  margin-top: 5px;
+  margin-right: -10px;
+  font-weight: lighter;
+}
+
 .hotelThumbnail {
  height: 12em;
  width: auto;
@@ -355,6 +440,11 @@ html {
 .starRatings {
  width:7em;
  height: auto;
+}
+
+footer{
+  position: fixed;
+  bottom: 0px;
 }
 
 
