@@ -52,36 +52,47 @@ createSortHotelsRow: function(result, subMasterParent, hotelsRow) {
     subMasterParent.appendChild(row)
 
     //plus and minus people here
-    var col3 = document.createElement('div');
-    col3.className = "col-3";
-    var innerRow = document.createElement('div');
-    innerRow.className = "row";
+   
     //minus column
-    var col4minus = document.createElement('div');
-    col4minus.className = "col-4";
-    var minus = document.createElement('h2')
+    var colminus = document.createElement('div');
+    colminus.className = "col-1";
+    colminus.id = 'removeGuest';
+    var minus = document.createElement('div')
     minus.innerText = "-"
-    col4minus.appendChild(minus)
-    innerRow.appendChild(col4minus);
+    colminus.appendChild(minus)
+    row.appendChild(colminus);
     //poeople column
-    var col4guest = document.createElement('div');
-    col4guest.className = "col-4";
-    var guest = document.createElement('h2')
-    guest.innerText = "1"
-    col4guest.appendChild(guest)
-    innerRow.appendChild(col4guest);
+    var colguest = document.createElement('div');
+    colguest.className = "col-1";
+
+    var countRow = document.createElement('div');
+    countRow.className = 'row';
+    countRow.id = 'guestIncrement';
+    var count = document.createElement('div')
+    count.innerText = "1"
+
+    var guestRow = document.createElement('div');
+    guestRow.className = 'row';
+    var guest = document.createElement('div')
+    guest.innerText = "guests"
+
+    countRow.appendChild(count);
+    colguest.appendChild(countRow);
+
+    guestRow.appendChild(guest);
+    colguest.appendChild(guestRow);
+
+    row.appendChild(colguest);
+
     //plus column here
-    var col4plus = document.createElement('div');
-    col4plus.className = "col-4";
-    var plus = document.createElement('h2')
+    var colplus = document.createElement('div');
+    colplus.className = "col-1";
+    colplus.id = 'addGuest';
+    var plus = document.createElement('div')
     plus.innerText = "+"
-    col4plus.appendChild(plus)
-    innerRow.appendChild(col4plus);
+    colplus.appendChild(plus)
+    row.appendChild(colplus);
 
-
-
-    col3.appendChild(innerRow)
-    row.appendChild(col3)
     //append plus minus above
 
     //order hotels by price
@@ -118,6 +129,9 @@ createSortHotelsRow: function(result, subMasterParent, hotelsRow) {
 
 },
 //increase price based on number of guests
+increasePrice{
+    
+}
 
 populateInitHotels: function(result, subMasterParent, hotelsRow){
     hotelsRow.id = "hotelrow"
