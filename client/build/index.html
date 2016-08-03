@@ -14,45 +14,74 @@
    <div class='col-12'>
 
     <div class='row'>
+      <div class='col-1'></div>
+      <div class='col-3'>
+        <div id=initLogo></div>
+      </div>
+      <div class='col-3'></div>
+      <div class='col-1'></div>
+    </div>
+    <div class='row'>
+      <div class='col-1'></div>
+      <div class='col-4'>
+        <div id='initHeader'>
+          <div id='padding'>
+           <div id="suggestedOrigin"></div>
+           <div id='dynamicSearchClick'>[ change origin ]</div>
 
-      <div id=initLogo></div>
-
-     
-      <div id='initHeader'>
-
-       <div id="suggestedOrigin"></div>
-       <div id='dynamicSearchClick'>[ change origin ]</div>
-
-       <div class='row'>
+           <div class='row'>
 
 
-         <div id="toggledDynamicSearchContent">
+             <div id="toggledDynamicSearchContent">
 
-           <input type="text" id="userOriginSelect" list="datalist" placeholder="origin">
-           <datalist id="datalist"></datalist>
+               <input type="text" id="userOriginSelect" list="datalist" placeholder="Where would you like to fly from?">
+               <datalist id="datalist"></datalist>
+
+             </div>
+
+           </div>
+
+           <div class='row'>
+
+             <div id='dates'>
+               <div class='row dateRow'>
+                 Departure date:
+                 <input type="date" id="searchStartDateInput">
+               </div>
+               <div class='row dateRow'>
+                 Return date:
+                 <input type="date" id="searchEndDateInput">
+               </div>
+             </div>
+
+           </div>
 
          </div>
-       </div>
+         <div class='row dateButton'>
+         <div id='spinnerHide'></div>
+           <input type='button' value="SEARCH DEALS" id="initialSearchButton">
 
-       <div class='row'>
-         <div id='dates'>
-           <!-- search row -->
-           from  >>
-           <input type="date" id="searchStartDateInput">
-           to  >>
-           <input type="date" id="searchEndDateInput">
-           <input type='button' value="GO" id="initialSearchButton">
          </div>
+
+
+         
        </div>
-
-
-
      </div>
+     <!-- loading div space -->
+     <div class='col-4'>
+       <!-- <div class='spinner'></div> -->
+     </div>
+     </div>
+     <!-- loading div space -->
+     <div class='col-1'></div>
+ 
    </div>
 
-
-
  </div>
+
+
+
+</div>
 </div>
 
 <!-- end ASH new -->

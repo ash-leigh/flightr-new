@@ -17082,6 +17082,13 @@
 	
 	ResultBoxes.prototype = {
 	  populateAllResults: function(result){
+	    var loader = document.getElementById('spinner');
+	    loader.id = 'spinnerHide';
+	
+	    var button = document.getElementById('initialSearchButton');
+	
+	    button.value = 'SEARCH DEALS';
+	
 	    var masterParent = document.getElementById('masterparent');
 	    var subMasterParent = this.createRow();
 	    subMasterParent.className = 'submasterparent';
@@ -18569,6 +18576,12 @@
 	
 	    button.onclick = function(){
 	      console.log('clicked')
+	
+	      var loader = document.getElementById('spinnerHide');
+	      loader.id = 'spinner';
+	      button.value = '';
+	     
+	
 	      var reset = document.getElementById('masterparent');
 	           reset.innerHTML = "";
 	        var locationData = getPositionData();
@@ -18669,7 +18682,7 @@
 	InitialUserPositionView.prototype = {
 	  displayLocation: function(location){
 	      var displayDiv = document.getElementById("suggestedOrigin");
-	      displayDiv.innerHTML = "not leaving from " + location + "?";
+	      displayDiv.innerHTML = location;
 	
 	      var dates = document.getElementById('dates');
 	      dates.id = 'datesInit';
@@ -18740,6 +18753,13 @@
 	  save: function(){
 	    localStorage.setItem('locationData', JSON.stringify({origin: this.value.split('/')[1]}));
 	    console.log(this.value.split('/')[1])
+	
+	    var originalOrigin = document.getElementById('suggestedOrigin');
+	
+	    if(this.value != 0){
+	      originalOrigin.innerHTML = this.value.split('/')[0];
+	    }
+	
 	  },
 	  search: function(){
 	    var populateOptions = function(data){

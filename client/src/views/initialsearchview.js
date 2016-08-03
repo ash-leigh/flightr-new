@@ -17,6 +17,12 @@ InitialSearchView.prototype = {
 
     button.onclick = function(){
       console.log('clicked')
+
+      var loader = document.getElementById('spinnerHide');
+      loader.id = 'spinner';
+      button.value = '';
+     
+
       var reset = document.getElementById('masterparent');
            reset.innerHTML = "";
         var locationData = getPositionData();

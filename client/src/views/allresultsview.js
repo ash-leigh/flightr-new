@@ -3,6 +3,13 @@ var ResultBoxes = function(){}
 
 ResultBoxes.prototype = {
   populateAllResults: function(result){
+    var loader = document.getElementById('spinner');
+    loader.id = 'spinnerHide';
+
+    var button = document.getElementById('initialSearchButton');
+
+    button.value = 'SEARCH DEALS';
+
     var masterParent = document.getElementById('masterparent');
     var subMasterParent = this.createRow();
     subMasterParent.className = 'submasterparent';

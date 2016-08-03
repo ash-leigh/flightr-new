@@ -11,6 +11,13 @@ DynamicSearch.prototype = {
   save: function(){
     localStorage.setItem('locationData', JSON.stringify({origin: this.value.split('/')[1]}));
     console.log(this.value.split('/')[1])
+
+    var originalOrigin = document.getElementById('suggestedOrigin');
+
+    if(this.value != 0){
+      originalOrigin.innerHTML = this.value.split('/')[0];
+    }
+
   },
   search: function(){
     var populateOptions = function(data){
